@@ -1,0 +1,3356 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>12Den - Yakın Olan Kazanır</title>
+<style>
+:root {
+--bg-dark: #060b14;
+--bg-card: rgba(15, 23, 42, 0.92);
+--bg-card-soft: rgba(30, 41, 59, 0.72);
+--border-subtle: rgba(148, 163, 184, 0.18);
+--text-main: #f8fafc;
+--text-muted: #94a3b8;
+--green: #22c55e;
+--green-dark: #16a34a;
+--blue: #38bdf8;
+--blue-dark: #0284c7;
+--red: #ef4444;
+--red-dark: #dc2626;
+--amber: #f59e0b;
+}
+
+* {
+box-sizing: border-box;
+-webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+margin: 0;
+padding: 0;
+min-height: 100%;
+background: radial-gradient(circle at top, #0f172a 0%, var(--bg-dark) 75%);
+color: var(--text-main);
+font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.phone {
+width: 100%;
+max-width: 430px;
+min-height: 100dvh;
+max-height: 100dvh;
+background: linear-gradient(180deg, rgba(11, 19, 36, 0.98) 0%, rgba(5, 10, 20, 0.99) 100%);
+border-left: 1px solid var(--border-subtle);
+border-right: 1px solid var(--border-subtle);
+position: relative;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+}
+
+@media (min-width: 450px) {
+.phone {
+min-height: 780px;
+max-height: 92dvh;
+border-radius: 28px;
+border: 1px solid rgba(148, 163, 184, 0.24);
+box-shadow: 0 24px 70px rgba(0, 0, 0, 0.75);
+}
+}
+
+.screen {
+display: none;
+flex: 1;
+flex-direction: column;
+gap: 12px;
+padding: 16px;
+overflow-y: auto;
+}
+
+.screen.active {
+display: flex;
+}
+
+.hero-box {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 14px;
+border-radius: 18px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+}
+
+.brand-logo {
+flex-shrink: 0;
+width: 48px;
+height: 48px;
+border-radius: 14px;
+background: rgba(15, 23, 42, 0.9);
+border: 1px solid rgba(56, 189, 248, 0.25);
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.hero-copy {
+min-width: 0;
+flex: 1;
+}
+
+.hero-title {
+font-size: 22px;
+font-weight: 900;
+letter-spacing: -0.02em;
+line-height: 1.15;
+}
+
+.brand-accent-blue { color: #38bdf8; }
+.brand-accent-red { color: #ef4444; }
+.brand-accent-green { color: #4ade80; }
+
+.hero-sub {
+font-size: 12px;
+color: var(--text-muted);
+margin-top: 3px;
+line-height: 1.35;
+}
+
+.login-card {
+display: flex;
+flex-direction: column;
+gap: 8px;
+padding: 12px;
+border-radius: 16px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+}
+
+.field-label {
+font-size: 11px;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 0.04em;
+color: var(--text-muted);
+}
+
+.text-field, .num-field {
+width: 100%;
+padding: 11px 12px;
+border-radius: 12px;
+border: 1px solid rgba(148, 163, 184, 0.25);
+background: rgba(2, 6, 23, 0.75);
+color: var(--text-main);
+font-size: 14px;
+outline: none;
+}
+
+.text-field:focus, .num-field:focus {
+border-color: var(--blue);
+}
+
+.num-field {
+font-size: 18px;
+font-weight: 800;
+text-align: center;
+}
+
+.btn {
+border: none;
+border-radius: 13px;
+padding: 11px 14px;
+font-size: 13px;
+font-weight: 800;
+cursor: pointer;
+color: var(--text-main);
+transition: transform 0.08s ease, opacity 0.15s ease, background 0.15s ease;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+}
+
+.btn:active:not(:disabled) {
+transform: scale(0.98);
+}
+
+.btn:disabled {
+opacity: 0.45;
+cursor: not-allowed;
+}
+
+.btn-green {
+background: linear-gradient(135deg, var(--green), var(--green-dark));
+color: #052e16;
+}
+
+.btn-blue {
+background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+color: #082f49;
+}
+
+.btn-red {
+background: linear-gradient(135deg, var(--red), var(--red-dark));
+color: #fff;
+}
+
+.btn-ghost {
+background: var(--bg-card-soft);
+border: 1px solid var(--border-subtle);
+color: var(--text-main);
+}
+
+.btn-small {
+padding: 6px 10px;
+font-size: 11px;
+border-radius: 10px;
+}
+
+.icon-action-btn {
+width: 38px;
+height: 38px;
+border-radius: 12px;
+border: none;
+font-size: 16px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+
+.stack-col {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.home-nav-btn {
+width: 100%;
+padding: 11px 12px;
+border-radius: 15px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+color: var(--text-main);
+display: flex;
+align-items: center;
+justify-content: space-between;
+cursor: pointer;
+text-align: left;
+}
+
+.home-nav-left, .list-left {
+display: flex;
+align-items: center;
+gap: 10px;
+min-width: 0;
+}
+
+.home-symbol {
+width: 38px;
+height: 38px;
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 18px;
+background: rgba(30, 41, 59, 0.9);
+flex-shrink: 0;
+}
+
+.menu-label {
+font-size: 14px;
+font-weight: 800;
+}
+
+.menu-desc, .muted {
+font-size: 11px;
+color: var(--text-muted);
+}
+
+.invite-banner {
+display: none;
+align-items: center;
+justify-content: space-between;
+gap: 8px;
+padding: 10px 12px;
+border-radius: 14px;
+background: rgba(14, 116, 144, 0.25);
+border: 1px solid rgba(56, 189, 248, 0.45);
+}
+
+.invite-banner.show {
+display: flex;
+}
+
+.center-stage {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 14px;
+text-align: center;
+}
+
+.matchup-box {
+width: 100%;
+display: flex;
+flex-direction: column;
+gap: 10px;
+padding: 14px;
+border-radius: 18px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+}
+
+.matchup-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 8px 10px;
+border-radius: 12px;
+background: rgba(30, 41, 59, 0.55);
+}
+
+@keyframes slideDiagLeft {
+from { opacity: 0; transform: translateX(-18px); }
+to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideDiagRight {
+from { opacity: 0; transform: translateX(18px); }
+to { opacity: 1; transform: translateX(0); }
+}
+
+.diag-left { animation: slideDiagLeft 0.35s ease; }
+.diag-right { animation: slideDiagRight 0.35s ease; }
+
+.center-countdown-pill {
+align-self: center;
+padding: 5px 14px;
+border-radius: 999px;
+background: rgba(56, 189, 248, 0.16);
+border: 1px solid rgba(56, 189, 248, 0.4);
+color: #7dd3fc;
+font-weight: 900;
+font-size: 13px;
+}
+
+.game-top-bar, .scoreboard-card {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 8px;
+padding: 10px 12px;
+border-radius: 16px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+}
+
+.sb-side {
+display: flex;
+align-items: center;
+gap: 7px;
+min-width: 0;
+flex: 1;
+}
+
+.sb-side.right {
+justify-content: flex-end;
+text-align: right;
+}
+
+.sb-name {
+font-size: 12px;
+font-weight: 800;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.sb-score-mid {
+font-size: 20px;
+font-weight: 900;
+display: flex;
+align-items: center;
+gap: 6px;
+flex-shrink: 0;
+}
+
+.frozen-tag {
+display: none;
+font-size: 10px;
+font-weight: 800;
+color: #7dd3fc;
+}
+
+.frozen-tag.active {
+display: inline-block;
+}
+
+.timer-row {
+display: flex;
+justify-content: center;
+}
+
+.timer-circle {
+width: 62px;
+height: 62px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+background: conic-gradient(var(--green) 100%, rgba(125, 211, 252, 0.18) 0%);
+position: relative;
+}
+
+.timer-circle::after {
+content: "";
+width: 50px;
+height: 50px;
+border-radius: 50%;
+background: #0b1324;
+position: absolute;
+}
+
+.timer-num {
+position: relative;
+z-index: 1;
+font-size: 18px;
+font-weight: 900;
+}
+
+.qa-stack {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.q-box, .guess-box {
+padding: 13px;
+border-radius: 16px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.q-label {
+font-size: 10px;
+font-weight: 900;
+letter-spacing: 0.05em;
+color: var(--blue);
+}
+
+.q-text {
+font-size: 15px;
+font-weight: 800;
+line-height: 1.4;
+}
+
+.hint-banner {
+display: none;
+padding: 9px 12px;
+border-radius: 12px;
+background: rgba(245, 158, 11, 0.15);
+border: 1px solid rgba(245, 158, 11, 0.4);
+color: #fde68a;
+font-size: 12px;
+font-weight: 800;
+text-align: center;
+}
+
+.hint-banner.show {
+display: block;
+}
+
+.hint-banner.freeze-alert {
+background: rgba(56, 189, 248, 0.16);
+border-color: rgba(56, 189, 248, 0.55);
+color: #bae6fd;
+}
+
+.joker-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+
+.joker-btn {
+padding: 10px;
+border-radius: 14px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+color: var(--text-main);
+cursor: pointer;
+text-align: left;
+}
+
+.joker-btn:disabled {
+opacity: 0.4;
+cursor: not-allowed;
+}
+
+.joker-title {
+display: flex;
+justify-content: space-between;
+font-size: 12px;
+font-weight: 900;
+}
+
+.joker-desc {
+font-size: 10px;
+color: var(--text-muted);
+margin-top: 2px;
+}
+
+.scoreboard-wrap {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.next-q-bar {
+align-self: center;
+padding: 4px 12px;
+border-radius: 999px;
+background: rgba(34, 197, 94, 0.15);
+border: 1px solid rgba(34, 197, 94, 0.35);
+color: #86efac;
+font-size: 11px;
+font-weight: 800;
+}
+
+.real-answer-center {
+text-align: center;
+padding: 12px;
+border-radius: 16px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+}
+
+.real-answer-num {
+font-size: 24px;
+font-weight: 900;
+color: var(--blue);
+margin-top: 2px;
+}
+
+.answers-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+
+.player-answer-card {
+padding: 11px;
+border-radius: 14px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+display: flex;
+flex-direction: column;
+gap: 4px;
+text-align: center;
+}
+
+.diff-badge {
+padding: 3px 8px;
+border-radius: 999px;
+font-size: 11px;
+font-weight: 800;
+display: inline-block;
+margin: 0 auto;
+}
+
+.diff-zero { background: rgba(56, 189, 248, 0.2); color: #7dd3fc; }
+.diff-pos { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+.diff-neg { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+
+.skip-status-note {
+font-size: 11px;
+color: var(--text-muted);
+text-align: center;
+}
+
+.end-hero-card {
+width: 100%;
+padding: 14px;
+border-radius: 18px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.end-sb-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 8px;
+}
+
+.end-side {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+flex: 1;
+min-width: 0;
+}
+
+.end-opp-name {
+font-size: 12px;
+font-weight: 800;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+max-width: 100%;
+}
+
+.winner-crown {
+font-size: 11px;
+font-weight: 900;
+color: #fde047;
+min-height: 14px;
+}
+
+.end-quick-actions {
+display: flex;
+justify-content: center;
+gap: 10px;
+}
+
+.list-card {
+padding: 11px 12px;
+border-radius: 15px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 8px;
+}
+
+.clickable-row {
+cursor: pointer;
+}
+
+.avatar-badge {
+width: 36px;
+height: 36px;
+border-radius: 12px;
+background: linear-gradient(135deg, #1e293b, #0f172a);
+border: 1px solid rgba(148, 163, 184, 0.3);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: 13px;
+font-weight: 900;
+overflow: hidden;
+flex-shrink: 0;
+}
+
+.avatar-badge.lg {
+width: 54px;
+height: 54px;
+border-radius: 16px;
+font-size: 20px;
+}
+
+.avatar-badge.editable {
+cursor: pointer;
+border-color: var(--blue);
+}
+
+.avatar-badge.winner-ring {
+border: 2px solid #facc15;
+box-shadow: 0 0 14px rgba(250, 204, 21, 0.45);
+}
+
+.avatar-badge img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.avatar-picker-drawer {
+display: none;
+flex-direction: column;
+gap: 8px;
+padding: 12px;
+border-radius: 15px;
+background: var(--bg-card);
+border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.avatar-picker-drawer.open {
+display: flex;
+}
+
+.emoji-grid {
+display: grid;
+grid-template-columns: repeat(6, 1fr);
+gap: 6px;
+}
+
+.emoji-choice-btn {
+padding: 7px 4px;
+border-radius: 10px;
+border: 1px solid var(--border-subtle);
+background: rgba(30, 41, 59, 0.7);
+color: var(--text-main);
+font-size: 13px;
+font-weight: 700;
+cursor: pointer;
+}
+
+.emoji-choice-btn.selected {
+border-color: var(--green);
+background: rgba(34, 197, 94, 0.22);
+}
+
+.tab-switch {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 6px;
+background: var(--bg-card);
+padding: 4px;
+border-radius: 13px;
+border: 1px solid var(--border-subtle);
+}
+
+.tab-btn {
+padding: 8px;
+border: none;
+border-radius: 10px;
+background: transparent;
+color: var(--text-muted);
+font-weight: 800;
+font-size: 12px;
+cursor: pointer;
+}
+
+.tab-btn.active {
+background: rgba(56, 189, 248, 0.2);
+color: #fff;
+}
+
+.stat-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+
+.stat-box, .compare-box, .date-box {
+padding: 11px;
+border-radius: 14px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+}
+
+.stat-val {
+font-size: 20px;
+font-weight: 900;
+margin-top: 2px;
+}
+
+.compare-box {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.compare-title {
+font-size: 11px;
+font-weight: 900;
+color: var(--text-muted);
+letter-spacing: 0.04em;
+}
+
+.compare-row {
+display: grid;
+grid-template-columns: 1fr auto 1fr;
+align-items: center;
+gap: 8px;
+font-size: 13px;
+font-weight: 800;
+}
+
+.compare-mid {
+font-size: 10px;
+color: var(--text-muted);
+text-align: center;
+}
+
+.form-chips {
+display: flex;
+gap: 5px;
+flex-wrap: wrap;
+margin-top: 4px;
+}
+
+.form-chip {
+width: 24px;
+height: 24px;
+border-radius: 7px;
+font-size: 11px;
+font-weight: 900;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+}
+
+.chip-w { background: rgba(34, 197, 94, 0.25); color: #86efac; }
+.chip-l { background: rgba(239, 68, 68, 0.25); color: #fca5a5; }
+
+.form-split-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+
+.form-side-card {
+padding: 8px;
+border-radius: 11px;
+background: rgba(30, 41, 59, 0.55);
+}
+
+.setting-row {
+padding: 12px;
+border-radius: 15px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 10px;
+}
+
+.switch-btn {
+width: 48px;
+height: 28px;
+border-radius: 999px;
+border: none;
+background: #334155;
+position: relative;
+cursor: pointer;
+flex-shrink: 0;
+transition: background 0.2s ease;
+}
+
+.switch-btn.on {
+background: var(--green);
+}
+
+.switch-btn::after {
+content: "";
+width: 22px;
+height: 22px;
+border-radius: 50%;
+background: #fff;
+position: absolute;
+top: 3px;
+left: 3px;
+transition: transform 0.2s ease;
+}
+
+.switch-btn.on::after {
+transform: translateX(20px);
+}
+
+.chat-messages {
+flex: 1;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 8px;
+padding: 10px;
+border-radius: 15px;
+background: var(--bg-card);
+border: 1px solid var(--border-subtle);
+}
+
+.msg-bubble {
+max-width: 78%;
+padding: 9px 12px;
+border-radius: 14px;
+font-size: 13px;
+line-height: 1.35;
+word-break: break-word;
+}
+
+.msg-me {
+align-self: flex-end;
+background: linear-gradient(135deg, var(--green), var(--green-dark));
+color: #052e16;
+font-weight: 700;
+}
+
+.msg-opp {
+align-self: flex-start;
+background: rgba(30, 41, 59, 0.9);
+color: var(--text-main);
+}
+
+.chat-send-row {
+display: flex;
+gap: 8px;
+}
+
+.modal-overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(2, 6, 23, 0.82);
+z-index: 99;
+align-items: center;
+justify-content: center;
+padding: 18px;
+}
+
+.modal-overlay.open {
+display: flex;
+}
+
+.modal-card {
+width: 100%;
+max-width: 360px;
+padding: 18px;
+border-radius: 20px;
+background: #0f172a;
+border: 1px solid var(--border-subtle);
+display: flex;
+flex-direction: column;
+gap: 12px;
+text-align: center;
+}
+
+.modal-actions {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+
+.rules-list {
+text-align: left;
+font-size: 12px;
+color: var(--text-muted);
+line-height: 1.5;
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.rules-list strong {
+color: var(--text-main);
+}
+</style>
+</head>
+<body>
+<div class="phone">
+<section id="screenLogin" class="screen active">
+<div class="hero-box">
+<div class="brand-logo" aria-hidden="true">
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+<circle cx="18" cy="18" r="15" stroke="#38bdf8" stroke-width="3"/>
+<circle cx="18" cy="18" r="9" stroke="#ef4444" stroke-width="3"/>
+<circle cx="18" cy="18" r="4" fill="#4ade80"/>
+</svg>
+</div>
+<div class="hero-copy">
+<div class="hero-title"><span class="brand-accent-blue">12</span><span class="brand-accent-red">D</span><span class="brand-accent-green">en</span></div>
+<div class="hero-sub">10 saniyede en yakın tahmini yap, 3 puana ilk ulaşan kazansın.</div>
+</div>
+</div>
+
+<button id="guestLoginBtn" type="button" class="btn btn-green" style="width:100%; padding:13px; font-size:14px;">Misafir Girişi</button>
+
+<div class="login-card">
+<div class="field-label">E-posta ve Şifre ile Giriş / Kayıt</div>
+<input id="loginIdentityInput" class="text-field" type="text" placeholder="ornek@mail.com">
+<input id="loginPasswordInput" class="text-field" type="password" placeholder="Şifre (kayıt için en az 6 karakter)">
+<button id="identityLoginBtn" type="button" class="btn btn-blue" style="width:100%;">E-posta / Şifre ile Giriş</button>
+</div>
+</section>
+
+<section id="screenHome" class="screen">
+<div class="hero-box">
+<div class="brand-logo" aria-hidden="true">
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+<circle cx="18" cy="18" r="15" stroke="#38bdf8" stroke-width="3"/>
+<circle cx="18" cy="18" r="9" stroke="#ef4444" stroke-width="3"/>
+<circle cx="18" cy="18" r="4" fill="#4ade80"/>
+</svg>
+</div>
+<div class="hero-copy">
+<div class="hero-title"><span class="brand-accent-blue">12</span><span class="brand-accent-red">D</span><span class="brand-accent-green">en</span></div>
+<div id="homeWelcomeSub" class="hero-sub">Hoş geldin Önder! Düelloya hazır mısın?</div>
+</div>
+<button type="button" class="icon-action-btn btn-ghost" title="Nasıl Oynanır?" onclick="openRulesModal()">❓</button>
+</div>
+
+<div id="incomingInviteBanner" class="invite-banner">
+<div style="min-width:0;">
+<div id="inviteFromText" style="font-size:12px; font-weight:900; color:#7dd3fc;">Oyun Daveti</div>
+<div class="muted">Seni 3 puanlık düelloya davet etti</div>
+</div>
+<div style="display:flex; gap:5px; flex-shrink:0;">
+<button id="acceptInviteBtn" type="button" class="btn btn-green btn-small" onclick="acceptIncomingInvite()">Kabul</button>
+<button id="declineInviteBtn" type="button" class="btn btn-red btn-small" onclick="declineIncomingInvite()">Reddet</button>
+</div>
+</div>
+
+<div class="stack-col">
+<button type="button" class="btn btn-green" style="width:100%; padding:14px; font-size:15px;" onclick="openNewGameMode()">Yeni Oyun</button>
+
+<button type="button" class="home-nav-btn" onclick="openMyProfileCard()">
+<div class="home-nav-left">
+<div id="homeProfileAvatarWrap"></div>
+<div>
+<div id="homeProfileTitle" class="menu-label">Önder</div>
+<div id="homeProfileMeta" class="menu-desc">Genel profil • Son 6 maç</div>
+</div>
+</div>
+<span class="muted">›</span>
+</button>
+
+<button type="button" class="home-nav-btn" onclick="openSubScreen('screenFinished')">
+<div class="home-nav-left">
+<div class="home-symbol sym-finished">🏁</div>
+<div>
+<div class="menu-label">Biten Oyunlarım</div>
+<div id="finishedCountDesc" class="menu-desc">0 maç kayıtlı</div>
+</div>
+</div>
+<span class="muted">›</span>
+</button>
+
+<button type="button" class="home-nav-btn" onclick="openSubScreen('screenFriends')">
+<div class="home-nav-left">
+<div class="home-symbol sym-friends">👥</div>
+<div>
+<div class="menu-label">Arkadaşlarım</div>
+<div id="friendsCountDesc" class="menu-desc">3 arkadaş</div>
+</div>
+</div>
+<span class="muted">›</span>
+</button>
+
+<button type="button" class="home-nav-btn" onclick="openSubScreen('screenLeaderboard')">
+<div class="home-nav-left">
+<div class="home-symbol sym-rank">🏆</div>
+<div>
+<div class="menu-label">Sıralama</div>
+<div class="menu-desc">Puan ve galibiyet tablosu</div>
+</div>
+</div>
+<span class="muted">›</span>
+</button>
+</div>
+
+<button type="button" class="home-nav-btn" onclick="openSubScreen('screenSettings')">
+<div class="home-nav-left">
+<div class="home-symbol sym-settings">⚙️</div>
+<div>
+<div class="menu-label">Ayarlar</div>
+<div id="settingsSummaryDesc" class="menu-desc">Ses, oyun daveti ve mesaj tercihleri</div>
+</div>
+</div>
+<span class="muted">›</span>
+</button>
+</section>
+
+<section id="screenNewGameMode" class="screen">
+<div class="hero-box">
+<div class="hero-copy">
+<div class="hero-title">Yeni Oyun</div>
+<div class="hero-sub">Rakibini seç ve 3 puanlık sayısal düelloya başla.</div>
+</div>
+</div>
+
+<div class="stack-col" style="gap:14px;">
+<button type="button" class="btn btn-green" style="width:100%; padding:14px; font-size:14px;" onclick="startMatchFlow(null)">Rastgele Oyun</button>
+
+<div class="login-card">
+<div class="field-label">Kullanıcı Adı ile Davet</div>
+<input id="customOppInput" class="text-field" type="text" placeholder="Rakip kullanıcı adını yaz...">
+<button type="button" class="btn btn-blue" style="width:100%;" onclick="startCustomUsernameMatch()">Kullanıcı Adı ile Başlat</button>
+</div>
+</div>
+
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenSearching" class="screen">
+<div class="center-stage">
+<div class="hero-title">Rakip Aranıyor...</div>
+<div id="searchingStatusText" class="muted">Uygun rakip bulunuyor</div>
+</div>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenFound" class="screen">
+<div class="center-stage">
+<div class="hero-title">Eşleşme Tamamlandı</div>
+<div class="muted">Düello hazırlığı başladı</div>
+
+<div id="matchupBox" class="matchup-box">
+<div class="matchup-row diag-left">
+<div class="list-left">
+<div id="foundMeAvatarWrap"></div>
+<div id="foundMeName" style="font-weight:800;">Önder</div>
+</div>
+<span class="muted">Hazır</span>
+</div>
+
+<div id="foundCenterCountdown" class="center-countdown-pill">5 sn</div>
+
+<div class="matchup-row diag-right" style="flex-direction:row-reverse;">
+<div class="list-left" style="flex-direction:row-reverse;">
+<div id="foundOppAvatarWrap"></div>
+<div id="foundOppName" style="font-weight:800;">Mert Demir</div>
+</div>
+<span class="muted">Rakip</span>
+</div>
+</div>
+</div>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenGame" class="screen">
+<div class="game-top-bar">
+<div class="sb-side">
+<div id="gameMeAvatarWrap"></div>
+<div style="min-width:0;">
+<div id="gameMeName" class="sb-name">Önder</div>
+<span id="meFrozenTag" class="frozen-tag">❄️ Donduruldun</span>
+</div>
+</div>
+
+<div class="sb-score-mid">
+<span id="gameMyScore" style="color:var(--green);">0</span>
+<span class="muted">-</span>
+<span id="gameOppScore" style="color:var(--blue);">0</span>
+</div>
+
+<div class="sb-side right">
+<div id="gameOppAvatarWrap"></div>
+<div style="min-width:0;">
+<div id="gameOppName" class="sb-name">Mert Demir</div>
+<span id="oppFrozenTag" class="frozen-tag">❄️ 5sn Dondu</span>
+</div>
+</div>
+</div>
+
+<div class="timer-row">
+<div id="timerCircle" class="timer-circle">
+<span id="timerText" class="timer-num">10</span>
+</div>
+</div>
+
+<div class="qa-stack">
+<div class="q-box">
+<div id="qCategory" class="q-label">SORU 1</div>
+<div id="qText" class="q-text">Soru yükleniyor...</div>
+</div>
+
+<div class="guess-box">
+<input id="guessInput" class="num-field" type="text" inputmode="decimal" autocomplete="off" placeholder="Tahminini yaz (örn: 81 veya -5)...">
+<button id="sendGuessBtn" type="button" class="btn btn-green" style="width:100%;" onclick="submitGuess()">Tahmini Gönder</button>
+</div>
+</div>
+
+<div id="hintBanner" class="hint-banner"></div>
+
+<div class="joker-row">
+<button id="jokerFreezeBtn" type="button" class="joker-btn" onclick="useFreezeJoker()">
+<div class="joker-title">
+<span>❄️ Dondur</span>
+<span id="freezeLeftBadge">1</span>
+</div>
+<div class="joker-desc">Rakibi 5 sn dondur</div>
+</button>
+
+<button id="jokerIdeaBtn" type="button" class="joker-btn" onclick="useIdeaJoker()">
+<div class="joker-title">
+<span>💡 İpucu</span>
+<span id="ideaLeftBadge">1</span>
+</div>
+<div class="joker-desc">Yaklaşık değer ver</div>
+</button>
+</div>
+
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenRoundResult" class="screen">
+<div class="scoreboard-wrap">
+<div id="nextRoundCountdownBadge" class="next-q-bar">Sonraki soru: 5 sn</div>
+<div class="scoreboard-card">
+<div class="sb-side">
+<div id="resMeAvatarWrap"></div>
+<div id="resMeName" class="sb-name">Önder</div>
+</div>
+
+<div class="sb-score-mid">
+<span id="resMyScore" style="color:var(--green);">0</span>
+<span class="muted">-</span>
+<span id="resOppScore" style="color:var(--blue);">0</span>
+</div>
+
+<div class="sb-side right">
+<div id="resOppAvatarWrap"></div>
+<div id="resOppName" class="sb-name">Mert Demir</div>
+</div>
+</div>
+</div>
+
+<div class="real-answer-center">
+<div class="muted" style="font-size:11px; font-weight:800;">DOĞRU CEVAP</div>
+<div id="realAnswerVal" class="real-answer-num">-</div>
+</div>
+
+<div class="answers-grid">
+<div class="player-answer-card">
+<div id="myAnswerLabel" class="muted">Önder'in Cevabı</div>
+<div id="myAnswerVal" style="font-size:16px; font-weight:900;">-</div>
+<div class="muted">Yaklaşma Farkı</div>
+<div id="myDiffBadge" class="diff-badge diff-zero">0</div>
+</div>
+
+<div class="player-answer-card">
+<div id="oppAnswerLabel" class="muted">Rakip Cevabı</div>
+<div id="oppAnswerVal" style="font-size:16px; font-weight:900;">-</div>
+<div class="muted">Yaklaşma Farkı</div>
+<div id="oppDiffBadge" class="diff-badge diff-zero">0</div>
+</div>
+</div>
+
+<div id="roundSummaryText" style="text-align:center; font-size:13px; font-weight:800;"></div>
+<div id="skipStatusNote" class="skip-status-note"></div>
+<button id="nextRoundBtn" type="button" class="btn btn-green" style="width:100%;" onclick="pressSkipTogether()">Hemen Geç</button>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenMatchEnd" class="screen">
+<div class="center-stage">
+<div id="matchEndTitle" class="hero-title">Maç Bitti!</div>
+
+<div class="end-hero-card">
+<div class="end-sb-row">
+<div id="endMeSide" class="end-side">
+<div id="endMeAvatarWrap"></div>
+<div id="endMeName" class="sb-name">Önder</div>
+<div id="endMeCrown" class="winner-crown"></div>
+</div>
+
+<div class="sb-score-mid">
+<span id="endMyScore" style="color:var(--green);">3</span>
+<span class="muted">-</span>
+<span id="endOppScore" style="color:var(--blue);">1</span>
+</div>
+
+<div id="endOppSide" class="end-side">
+<div id="endOppAvatarWrap"></div>
+<div id="endOppName" class="end-opp-name">Mert Demir</div>
+<div id="endOppCrown" class="winner-crown"></div>
+</div>
+</div>
+
+<div class="end-quick-actions">
+<button id="endQuickAddBtn" type="button" class="icon-action-btn btn-blue" title="Arkadaş Ekle" onclick="quickAddOpponentFriend()">➕</button>
+<button type="button" class="icon-action-btn btn-green" title="Mesaj Gönder" onclick="openChatFromMatchEnd()">💬</button>
+</div>
+</div>
+
+<button type="button" class="btn btn-ghost" style="width:100%;" onclick="openOpponentProfileFromEnd()">Oyuncu Profili</button>
+<button type="button" class="btn btn-green" style="width:100%;" onclick="openNewGameMode()">Yeni Oyun</button>
+</div>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenProfile" class="screen">
+<div class="list-card">
+<div class="list-left">
+<div id="profileAvatarWrap"></div>
+<div>
+<div id="profileName" style="font-size:16px; font-weight:900;">Önder</div>
+<div id="profileSub" class="muted">Oyuncu Profili</div>
+</div>
+</div>
+<button id="profileMsgBtn" type="button" class="icon-action-btn btn-green" title="Mesaj" onclick="openChatFromProfile()">💬</button>
+</div>
+
+<div id="avatarPickerDrawer" class="avatar-picker-drawer">
+<div class="field-label">Emoji Seç</div>
+<div id="emojiPickerGrid" class="emoji-grid"></div>
+<button type="button" class="btn btn-blue btn-small" style="width:100%;" onclick="triggerProfilePhotoUpload()">Resim Ekle</button>
+<input id="profilePhotoFileInput" type="file" accept="image/*" style="display:none;" onchange="handleProfilePhotoPicked(event)">
+</div>
+
+<div id="profileTabsWrap" class="tab-switch">
+<button id="tabGeneralBtn" type="button" class="tab-btn active" onclick="switchProfileTab('general')">Genel</button>
+<button id="tabCompareBtn" type="button" class="tab-btn" onclick="switchProfileTab('compare')">Karşılaştır</button>
+</div>
+
+<div id="profileGeneralPanel" style="display:flex; flex-direction:column; gap:8px; flex:1; overflow-y:auto;"></div>
+<div id="profileComparePanel" style="display:none; flex-direction:column; gap:8px; flex:1; overflow-y:auto;"></div>
+
+<button id="confirmProfileBtn" type="button" class="btn btn-green" style="display:none; width:100%;" onclick="confirmSelfProfileChanges()">Onayla</button>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenSettings" class="screen">
+<div class="hero-box">
+<div class="hero-copy">
+<div class="hero-title">Ayarlar</div>
+<div class="hero-sub">Ses efektleri, oyun davetleri ve mesaj izinlerini yönet.</div>
+</div>
+</div>
+
+<div class="stack-col">
+<div class="setting-row">
+<div>
+<div class="menu-label">Oyun Sesleri</div>
+<div id="soundSettingDesc" class="menu-desc">Açık</div>
+</div>
+<button id="toggleSoundBtn" type="button" class="switch-btn on" aria-label="Oyun Sesleri" onclick="toggleSetting('sound')"></button>
+</div>
+
+<div class="setting-row">
+<div>
+<div class="menu-label">Oyun Daveti Alma</div>
+<div id="gameInviteSettingDesc" class="menu-desc">Açık</div>
+</div>
+<button id="toggleGameInviteBtn" type="button" class="switch-btn on" aria-label="Oyun Daveti Alma" onclick="toggleSetting('gameInvite')"></button>
+</div>
+
+<div class="setting-row">
+<div>
+<div class="menu-label">Mesaj Alma</div>
+<div id="messageSettingDesc" class="menu-desc">Açık</div>
+</div>
+<button id="toggleMessageBtn" type="button" class="switch-btn on" aria-label="Mesaj Alma" onclick="toggleSetting('messages')"></button>
+</div>
+</div>
+
+<button id="logoutAuthBtn" type="button" class="btn btn-red" onclick="logoutCurrentAuthUser()">Çıkış Yap</button>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenChat" class="screen">
+<div class="list-card">
+<div class="list-left">
+<div id="chatAvatarWrap"></div>
+<div>
+<div id="chatPlayerName" style="font-weight:900;">Mert Demir</div>
+<div id="chatStatusSub" class="muted">Sohbet</div>
+</div>
+</div>
+<div style="display:flex; gap:5px;">
+<button id="chatAddBtn" type="button" class="btn btn-blue btn-small" onclick="toggleFriendInChat()">Ekle</button>
+<button id="chatBlockBtn" type="button" class="btn btn-red btn-small" onclick="toggleBlockInChat()">Engelle</button>
+</div>
+</div>
+
+<div id="chatMessages" class="chat-messages"></div>
+
+<div class="chat-send-row">
+<input id="chatInput" class="num-field" style="font-size:14px; padding:10px;" type="text" placeholder="Mesaj yaz...">
+<button id="chatSendBtn" type="button" class="btn btn-green" style="padding:10px 14px;" onclick="sendChatMessage()">Gönder</button>
+</div>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenFinished" class="screen">
+<div class="hero-title">🏁 Biten Oyunlarım</div>
+<div id="finishedList" style="display:flex; flex-direction:column; gap:8px; flex:1; overflow-y:auto;"></div>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenFriends" class="screen">
+<div class="hero-title">👥 Arkadaşlarım</div>
+<div id="friendsList" style="display:flex; flex-direction:column; gap:8px; flex:1; overflow-y:auto;"></div>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<section id="screenLeaderboard" class="screen">
+<div class="hero-title">🏆 Sıralama</div>
+<div id="leaderboardList" style="display:flex; flex-direction:column; gap:8px; flex:1; overflow-y:auto;"></div>
+<button type="button" class="btn btn-ghost" onclick="requestGoHome()">Home</button>
+</section>
+
+<div id="forfeitModal" class="modal-overlay" role="dialog" aria-modal="true">
+<div class="modal-card">
+<div class="hero-title" style="font-size:18px;">Maçtan Çıkılsın mı?</div>
+<div class="hero-sub">Maç devam ederken çıkarsan <strong>0-3 hükmen mağlup</strong> sayılırsın.</div>
+<div class="modal-actions">
+<button type="button" class="btn btn-ghost" onclick="closeForfeitModal()">Devam Et</button>
+<button type="button" class="btn btn-red" onclick="confirmForfeitAndGoHome()">Çık (Hükmen)</button>
+</div>
+</div>
+</div>
+
+<div id="rulesModal" class="modal-overlay" role="dialog" aria-modal="true">
+<div class="modal-card">
+<div class="hero-title" style="font-size:18px;">12Den Nasıl Oynanır?</div>
+<div class="rules-list">
+<div><strong>• Amaç:</strong> Her soruda 10 saniye içinde doğru sayıya rakibinden daha yakın tahmin yap.</div>
+<div><strong>• Skor:</strong> Turu kazanan +1 puan alır. <strong>3 puana</strong> ilk ulaşan maçı kazanır.</div>
+<div><strong>• Puanlama:</strong> Galibiyete +3 bonus puan ve aldığın tur skoru eklenir.</div>
+<div><strong>• ❄️ Dondur Jokeri:</strong> Rakibini 5 saniye dondurarak tahmin süresini ve isabetini bozar (maç başı 1 hak).</div>
+<div><strong>• 💡 İpucu Jokeri:</strong> Doğru cevaba yakın referans bir değer gösterir (maç başı 1 hak).</div>
+</div>
+<button type="button" class="btn btn-green" style="width:100%;" onclick="closeRulesModal()">Anladım</button>
+</div>
+</div>
+</div>
+
+<div id="debugErrorBox" style="display:none; position:fixed; bottom:10px; left:10px; right:10px; z-index:999; background:#7f1d1d; color:#fecaca; padding:10px; border-radius:10px; font-size:12px; font-weight:700;"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+
+<script>
+const STORAGE_KEY = "yakin_olan_kazanir_12den_state_v1";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB_di628uDXyyApQcffwniHtBomdT344xM",
+  authDomain: "yakin-olan-kazanir.firebaseapp.com",
+  projectId: "yakin-olan-kazanir",
+  storageBucket: "yakin-olan-kazanir.firebasestorage.app",
+  messagingSenderId: "814425709834",
+  appId: "1:814425709834:web:2e15b275d767423ea9eef3",
+  measurementId: "G-NFEG8M6Z4C"
+};
+
+let auth = null;
+let db = null;
+let firebaseReady = false;
+let currentAuthUser = null;
+
+let audioCtx = null;
+let activeScreenId = "screenLogin";
+
+let searchTimeout = null;
+let foundInterval = null;
+let questionInterval = null;
+let freezeTimeout = null;
+let selfFreezeTimeout = null;
+let nextRoundInterval = null;
+let oppSkipTimeout = null;
+
+let inviteUnsubscribe = null;
+let friendRequestsUnsubscribe = null;
+let liveMatchDocUnsubscribe = null;
+let chatUnsubscribe = null;
+let activeMatchRoomId = null;
+let pendingIncomingInvite = null;
+
+const emojiChoices = ["Yok", "😎", "🔥", "⚡", "🎯", "🧠", "🦁", "🐺", "🦅", "👑", "🍀", "🚀"];
+
+const botPool = [
+{ name: "Mert Demir", emoji: "⚡" },
+{ name: "Zeynep Kaya", emoji: "🎯" },
+{ name: "Emre Yılmaz", emoji: "🔥" },
+{ name: "Selin Arslan", emoji: "🧠" },
+{ name: "Kaan Şahin", emoji: "🦁" },
+{ name: "Deniz Çelik", emoji: "🚀" }
+];
+
+const numericQuestions = [
+{ cat: "COĞRAFYA", q: "Türkiye'de kaç il bulunmaktadır?", ans: 81, unit: "il" },
+{ cat: "UZAY", q: "Güneş Sistemi'nde Güneş'e en yakın gezegen olan Merkür'ün Güneş'e ortalama uzaklığı kaç milyon kilometredir?", ans: 58, unit: "milyon km" },
+{ cat: "SPOR", q: "Bir standart futbol maçının normal süresi (uzatmalar hariç) kaç dakikadır?", ans: 90, unit: "dakika" },
+{ cat: "TARİH", q: "İstanbul'un fethi hangi yılda gerçekleşmiştir?", ans: 1453, unit: "yıl" },
+{ cat: "BİLİM", q: "Suyun normal atmosfer basıncında kaynama noktası kaç santigrat derecedir?", ans: 100, unit: "°C" },
+{ cat: "COĞRAFYA", q: "Dünyanın en yüksek dağı olan Everest'in deniz seviyesinden yüksekliği kaç metredir?", ans: 8849, unit: "metre" },
+{ cat: "GENEL KÜLTÜR", q: "Bir normal yılda (artık yıl olmayan) toplam kaç gün vardır?", ans: 365, unit: "gün" },
+{ cat: "MATEMATİK", q: "Bir üçgenin iç açıları toplamı kaç derecedir?", ans: 180, unit: "derece" },
+{ cat: "SPOR", q: "Basketbolda normal oyun süresi (4 periyot toplamı) kaç dakikadır?", ans: 40, unit: "dakika" },
+{ cat: "COĞRAFYA", q: "Türkiye'nin en uzun nehri olan Kızılırmak yaklaşık kaç kilometredir?", ans: 1355, unit: "km" },
+{ cat: "FİZİK", q: "Işığın boşluktaki hızı saniyede yaklaşık kaç bin kilometredir?", ans: 300, unit: "bin km/sn" },
+{ cat: "TARİH", q: "Türkiye Cumhuriyeti hangi yılda ilan edilmiştir?", ans: 1923, unit: "yıl" },
+{ cat: "COĞRAFYA", q: "Türkiye'nin en yüksek dağı olan Ağrı Dağı'nın yüksekliği kaç metredir?", ans: 5137, unit: "metre" },
+{ cat: "BİLİM", q: "İnsan vücudunda yetişkin bir bireyde normalde kaç kemik bulunur?", ans: 206, unit: "kemik" },
+{ cat: "TARİH", q: "Türkiye Büyük Millet Meclisi (TBMM) hangi yılda açılmıştır?", ans: 1920, unit: "yıl" },
+{ cat: "UZAY", q: "Ay'ın Dünya etrafındaki bir tam turu yaklaşık kaç gün sürer?", ans: 27, unit: "gün" },
+{ cat: "GENEL KÜLTÜR", q: "Standart bir piyano klavyesinde toplam kaç tuş bulunur?", ans: 88, unit: "tuş" },
+{ cat: "COĞRAFYA", q: "Van Gölü'nün deniz seviyesinden yüksekliği yaklaşık kaç metredir?", ans: 1646, unit: "metre" },
+{ cat: "BİLİM", q: "Sesin 20°C sıcaklıktaki havada yayılma hızı saniyede yaklaşık kaç metredir?", ans: 343, unit: "m/sn" },
+{ cat: "SPOR", q: "Olimpiyat Oyunları modern dönemde kaç yılda bir düzenlenmektedir?", ans: 4, unit: "yıl" },
+{ cat: "TARİH", q: "Malazgirt Meydan Muharebesi hangi yılda gerçekleşmiştir?", ans: 1071, unit: "yıl" },
+{ cat: "MATEMATİK", q: "Bir düzgün beşgenin iç açıları toplamı kaç derecedir?", ans: 540, unit: "derece" },
+{ cat: "COĞRAFYA", q: "Dünya üzerindeki en derin nokta olan Mariana Çukuru'nun derinliği yaklaşık kaç metredir?", ans: 10994, unit: "metre" },
+{ cat: "BİLİM", q: "Periyodik tabloda doğal ve yapay toplam kaç element tanımlanmıştır?", ans: 118, unit: "element" },
+{ cat: "GENEL KÜLTÜR", q: "Bir satranç tahtasında toplam kaç kare vardır?", ans: 64, unit: "kare" },
+{ cat: "FİZİK", q: "Mutlak sıfır noktası yaklaşık kaç santigrat derecedir?", ans: -273, unit: "°C" },
+{ cat: "TARİH", q: "Çanakkale Deniz Zaferi hangi yılda kazanılmıştır?", ans: 1915, unit: "yıl" },
+{ cat: "SPOR", q: "Maraton koşusunun resmi mesafesi yaklaşık kaç kilometredir?", ans: 42, unit: "km" },
+{ cat: "UZAY", q: "Güneş ışınlarının Dünya'ya ulaşması yaklaşık kaç dakika sürer?", ans: 8, unit: "dakika" },
+{ cat: "COĞRAFYA", q: "Türkiye'nin en büyük gölü olan Van Gölü'nün yüzölçümü yaklaşık kaç kilometrekaredir?", ans: 3713, unit: "km²" }
+];
+
+let currentUser = {
+name: "Önder",
+emoji: "",
+photoUrl: "",
+isGuest: true
+};
+
+let settingsState = {
+sound: true,
+gameInvite: true,
+messages: true
+};
+
+let playersDB = {
+"Önder": { name: "Önder", emoji: "", photoUrl: "", pts: 0, played: 0, wins: 0, losses: 0, recentForm: [] },
+"Mert Demir": { name: "Mert Demir", emoji: "⚡", photoUrl: "", pts: 18, played: 6, wins: 4, losses: 2, recentForm: [] },
+"Zeynep Kaya": { name: "Zeynep Kaya", emoji: "🎯", photoUrl: "", pts: 15, played: 5, wins: 3, losses: 2, recentForm: [] },
+"Emre Yılmaz": { name: "Emre Yılmaz", emoji: "🔥", photoUrl: "", pts: 12, played: 4, wins: 2, losses: 2, recentForm: [] }
+};
+
+let friendsSet = new Set(["Mert Demir", "Zeynep Kaya", "Emre Yılmaz"]);
+let blockedSet = new Set();
+let chatStore = {};
+let h2hRecords = {};
+
+let game = {
+inProgress: false,
+myScore: 0,
+oppScore: 0,
+questionNum: 0,
+currentQ: null,
+usedIndices: [],
+timeLeft: 10,
+freezeLeft: 1,
+ideaLeft: 1,
+oppFrozen: false,
+meFrozen: false,
+hintUsedThisQ: false,
+answeredThisQ: false,
+oppName: "Mert Demir",
+mePressedSkip: false,
+oppPressedSkip: false,
+finishedGames: []
+};
+
+let currentProfileTarget = { name: "Önder", tab: "general" };
+let avatarDrawerOpen = false;
+let draftSelfProfile = { name: "Önder", emoji: "", photoUrl: "" };
+let chatTarget = { name: "Mert Demir" };
+
+function showDebugError(msg) {
+const box = document.getElementById("debugErrorBox");
+if (!box) return;
+box.textContent = "Hata: " + msg;
+box.style.display = "block";
+setTimeout(() => {
+box.style.display = "none";
+}, 6000);
+}
+
+window.addEventListener("error", function (e) {
+showDebugError(e.message || "Bilinmeyen script hatası");
+});
+
+window.addEventListener("unhandledrejection", function (e) {
+const reason = e && e.reason ? (e.reason.message || String(e.reason)) : "Beklenmeyen hata";
+showDebugError(reason);
+});
+
+function isSafePhotoUrl(url) {
+if (!url || typeof url !== "string") return false;
+const trimmed = url.trim();
+if (/^data:image\/(png|jpeg|jpg|gif|webp);base64,/i.test(trimmed)) return true;
+if (/^https?:\/\//i.test(trimmed)) return true;
+return false;
+}
+
+function saveStateToStorage() {
+try {
+const payload = {
+currentUser,
+settingsState,
+playersDB,
+friends: [...friendsSet],
+blocked: [...blockedSet],
+chatStore,
+h2hRecords,
+finishedGames: game.finishedGames
+};
+localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+} catch (_) {}
+
+if (firebaseReady && currentAuthUser && db) {
+syncPlayerAndUserStateFirestore().catch(() => {});
+}
+}
+
+function loadStateFromStorage() {
+try {
+const raw = localStorage.getItem(STORAGE_KEY);
+if (!raw) return;
+const parsed = JSON.parse(raw);
+if (parsed.currentUser && typeof parsed.currentUser === "object") {
+currentUser = {
+name: String(parsed.currentUser.name || "Önder").trim() || "Önder",
+emoji: String(parsed.currentUser.emoji || ""),
+photoUrl: isSafePhotoUrl(parsed.currentUser.photoUrl) ? String(parsed.currentUser.photoUrl) : "",
+isGuest: Boolean(parsed.currentUser.isGuest)
+};
+}
+if (parsed.settingsState && typeof parsed.settingsState === "object") {
+settingsState = {
+sound: parsed.settingsState.sound !== false,
+gameInvite: parsed.settingsState.gameInvite !== false,
+messages: parsed.settingsState.messages !== false
+};
+}
+if (parsed.playersDB && typeof parsed.playersDB === "object") {
+playersDB = { ...playersDB, ...parsed.playersDB };
+}
+if (Array.isArray(parsed.friends)) friendsSet = new Set(parsed.friends);
+if (Array.isArray(parsed.blocked)) blockedSet = new Set(parsed.blocked);
+if (parsed.chatStore && typeof parsed.chatStore === "object") chatStore = parsed.chatStore;
+if (parsed.h2hRecords && typeof parsed.h2hRecords === "object") h2hRecords = parsed.h2hRecords;
+if (Array.isArray(parsed.finishedGames)) game.finishedGames = parsed.finishedGames;
+} catch (_) {}
+}
+
+function buildPairRoomId(nameA, nameB) {
+const pair = [String(nameA || "").trim(), String(nameB || "").trim()]
+.filter(Boolean)
+.sort((a, b) => a.localeCompare(b, "tr"));
+return pair.join("__") || "room_default";
+}
+
+function stopRealtimeListeners() {
+if (inviteUnsubscribe) { inviteUnsubscribe(); inviteUnsubscribe = null; }
+if (friendRequestsUnsubscribe) { friendRequestsUnsubscribe(); friendRequestsUnsubscribe = null; }
+if (liveMatchDocUnsubscribe) { liveMatchDocUnsubscribe(); liveMatchDocUnsubscribe = null; }
+if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; }
+}
+
+async function syncPlayerAndUserStateFirestore() {
+if (!firebaseReady || !currentAuthUser || !db) return;
+const uid = currentAuthUser.uid;
+const me = playersDB[currentUser.name] || {
+name: currentUser.name, emoji: currentUser.emoji || "", photoUrl: "",
+pts: 0, played: 0, wins: 0, losses: 0, recentForm: []
+};
+
+try {
+await db.collection("players").doc(uid).set({
+uid,
+name: me.name,
+emoji: me.emoji || "",
+photoUrl: isSafePhotoUrl(me.photoUrl) ? me.photoUrl : "",
+pts: Number(me.pts || 0),
+played: Number(me.played || 0),
+wins: Number(me.wins || 0),
+losses: Number(me.losses || 0),
+recentForm: Array.isArray(me.recentForm) ? me.recentForm.slice(0, 6) : [],
+updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true });
+
+await db.collection("user_states").doc(uid).set({
+uid,
+settings: settingsState,
+friends: [...friendsSet],
+blocked: [...blockedSet],
+h2hRecords,
+finishedGames: Array.isArray(game.finishedGames) ? game.finishedGames.slice(0, 30) : [],
+updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true });
+} catch (err) {
+console.warn("Firestore profil/durum senkronizasyonu atlandı:", err);
+}
+}
+
+async function loadRemotePlayersAndUserState() {
+if (!firebaseReady || !currentAuthUser || !db) return;
+const uid = currentAuthUser.uid;
+try {
+const snap = await db.collection("players").limit(50).get();
+snap.forEach(doc => {
+const d = doc.data();
+if (d && d.name && d.name !== currentUser.name) {
+playersDB[d.name] = {
+name: d.name,
+emoji: d.emoji || "",
+photoUrl: isSafePhotoUrl(d.photoUrl) ? d.photoUrl : "",
+pts: Number(d.pts || 0),
+played: Number(d.played || 0),
+wins: Number(d.wins || 0),
+losses: Number(d.losses || 0),
+recentForm: Array.isArray(d.recentForm) ? d.recentForm : []
+};
+}
+});
+
+const stateDoc = await db.collection("user_states").doc(uid).get();
+if (stateDoc.exists) {
+const sd = stateDoc.data();
+if (Array.isArray(sd.friends)) sd.friends.forEach(f => friendsSet.add(f));
+if (Array.isArray(sd.blocked)) blockedSet = new Set(sd.blocked);
+}
+} catch (err) {
+console.warn("Firestore oyuncu/durum okuma uyarısı:", err);
+}
+}
+
+function listenIncomingInvitesFirestore() {
+if (inviteUnsubscribe) { inviteUnsubscribe(); inviteUnsubscribe = null; }
+if (!firebaseReady || !currentAuthUser || !db) return;
+
+try {
+inviteUnsubscribe = db.collection("invites")
+.where("toUid", "==", currentAuthUser.uid)
+.where("status", "==", "pending")
+.onSnapshot(snap => {
+if (!settingsState.gameInvite) {
+pendingIncomingInvite = null;
+renderIncomingInviteBanner();
+return;
+}
+const firstDoc = snap.docs[0];
+if (!firstDoc) {
+pendingIncomingInvite = null;
+renderIncomingInviteBanner();
+return;
+}
+const data = firstDoc.data();
+if (blockedSet.has(data.fromName)) {
+pendingIncomingInvite = null;
+renderIncomingInviteBanner();
+return;
+}
+pendingIncomingInvite = { id: firstDoc.id, ...data };
+renderIncomingInviteBanner();
+}, err => {
+console.warn("Davet dinleyicisi uyarısı:", err);
+});
+} catch (_) {}
+}
+
+function renderIncomingInviteBanner() {
+const banner = document.getElementById("incomingInviteBanner");
+if (!banner) return;
+if (pendingIncomingInvite && settingsState.gameInvite) {
+document.getElementById("inviteFromText").textContent =
+`Oyun Daveti: ${pendingIncomingInvite.fromName || "Oyuncu"}`;
+banner.classList.add("show");
+} else {
+banner.classList.remove("show");
+}
+}
+
+async function acceptIncomingInvite() {
+if (!pendingIncomingInvite) return;
+const inv = pendingIncomingInvite;
+pendingIncomingInvite = null;
+renderIncomingInviteBanner();
+
+if (firebaseReady && db && inv.id) {
+try {
+await db.collection("invites").doc(inv.id).update({
+status: "accepted",
+updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+});
+} catch (_) {}
+}
+
+startMatchFlow({ name: inv.fromName || "Rakip", emoji: "" }, false);
+}
+
+async function declineIncomingInvite() {
+if (!pendingIncomingInvite) return;
+const inv = pendingIncomingInvite;
+pendingIncomingInvite = null;
+renderIncomingInviteBanner();
+
+if (firebaseReady && db && inv.id) {
+try {
+await db.collection("invites").doc(inv.id).update({
+status: "rejected",
+updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+});
+} catch (_) {}
+}
+}
+
+async function sendGameInviteFirestore(targetName) {
+if (!firebaseReady || !currentAuthUser || !db) return;
+try {
+const qSnap = await db.collection("players").where("name", "==", targetName).limit(1).get();
+if (qSnap.empty) return;
+const targetDoc = qSnap.docs[0];
+const toUid = targetDoc.data().uid || targetDoc.id;
+if (!toUid || toUid === currentAuthUser.uid) return;
+
+await db.collection("invites").add({
+fromUid: currentAuthUser.uid,
+fromName: currentUser.name,
+toUid,
+toName: targetName,
+status: "pending",
+createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+});
+} catch (err) {
+console.warn("Davet kaydı uyarısı:", err);
+}
+}
+
+async function sendFriendRequestFirestore(targetName) {
+const cleanTarget = String(targetName || "").trim();
+if (!cleanTarget || cleanTarget === currentUser.name) return;
+
+friendsSet.add(cleanTarget);
+saveStateToStorage();
+updateHomeUI();
+renderFriends();
+
+if (!firebaseReady || !currentAuthUser || !db) return;
+
+try {
+const qSnap = await db.collection("players").where("name", "==", cleanTarget).limit(1).get();
+if (qSnap.empty) return;
+const targetDoc = qSnap.docs[0];
+const toUid = targetDoc.data().uid || targetDoc.id;
+if (!toUid || toUid === currentAuthUser.uid) return;
+
+const reqId = `${currentAuthUser.uid}__${toUid}`;
+await db.collection("friendRequests").doc(reqId).set({
+fromUid: currentAuthUser.uid,
+fromName: currentUser.name,
+toUid,
+toName: cleanTarget,
+status: "pending",
+updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+createdAt: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true });
+} catch (err) {
+console.warn("Arkadaşlık isteği Firestore kaydı uyarısı:", err);
+}
+}
+
+function listenFriendRequestsFirestore() {
+if (friendRequestsUnsubscribe) {
+friendRequestsUnsubscribe();
+friendRequestsUnsubscribe = null;
+}
+if (!firebaseReady || !currentAuthUser || !db) return;
+
+try {
+friendRequestsUnsubscribe = db.collection("friendRequests")
+.where("toUid", "==", currentAuthUser.uid)
+.where("status", "==", "pending")
+.onSnapshot(snap => {
+snap.forEach(async doc => {
+const d = doc.data();
+if (!d || !d.fromName || blockedSet.has(d.fromName)) return;
+ensurePlayerInDB(d.fromName, "");
+friendsSet.add(d.fromName);
+await doc.ref.update({
+status: "accepted",
+acceptedAt: firebase.firestore.FieldValue.serverTimestamp()
+}).catch(() => {});
+saveStateToStorage();
+updateHomeUI();
+if (activeScreenId === "screenFriends") renderFriends();
+});
+}, err => {
+console.warn("Arkadaşlık isteği dinleyicisi uyarısı:", err);
+});
+} catch (_) {}
+}
+
+function subscribeLiveMatchFirestore(roomId) {
+if (liveMatchDocUnsubscribe) {
+liveMatchDocUnsubscribe();
+liveMatchDocUnsubscribe = null;
+}
+if (!firebaseReady || !currentAuthUser || !db || !roomId) return;
+
+try {
+liveMatchDocUnsubscribe = db.collection("matches").doc(roomId).onSnapshot(snap => {
+if (!snap.exists) return;
+const data = snap.data();
+if (!data || !data.players) return;
+
+const otherEntry = Object.entries(data.players).find(([uid]) => uid !== currentAuthUser.uid);
+if (otherEntry && otherEntry[1]) {
+const remoteOpp = otherEntry[1];
+if (typeof remoteOpp.score === "number" && game.inProgress) {
+game.oppScore = remoteOpp.score;
+updateLiveScoreboards();
+}
+if (remoteOpp.castFreezeOnOpponent === true && game.inProgress && !game.meFrozen && !game.answeredThisQ) {
+triggerSelfFrozenState();
+}
+}
+}, err => {
+console.warn("Canlı maç odası dinleyicisi uyarısı:", err);
+});
+} catch (_) {}
+}
+
+async function createOrSyncMatchRoomFirestore(isForfeit = false) {
+if (!firebaseReady || !currentAuthUser || !db) return;
+try {
+if (!activeMatchRoomId) {
+activeMatchRoomId = `${currentAuthUser.uid}__${buildPairRoomId(currentUser.name, game.oppName)}__${Date.now()}`;
+}
+await db.collection("matches").doc(activeMatchRoomId).set({
+roomId: activeMatchRoomId,
+participants: [currentAuthUser.uid],
+players: {
+[currentAuthUser.uid]: {
+name: currentUser.name,
+score: game.myScore,
+castFreezeOnOpponent: Boolean(game.oppFrozen)
+}
+},
+oppName: game.oppName,
+oppScore: game.oppScore,
+questionNum: game.questionNum,
+oppFrozen: Boolean(game.oppFrozen),
+inProgress: Boolean(game.inProgress),
+isForfeit: Boolean(isForfeit),
+updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true });
+
+if (!isForfeit && !liveMatchDocUnsubscribe) {
+subscribeLiveMatchFirestore(activeMatchRoomId);
+}
+if (isForfeit && liveMatchDocUnsubscribe) {
+liveMatchDocUnsubscribe();
+liveMatchDocUnsubscribe = null;
+}
+} catch (err) {
+console.warn("Maç odası senkronizasyonu uyarısı:", err);
+}
+}
+
+async function listenChatRoomFirestore(peerName) {
+if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; }
+if (!firebaseReady || !currentAuthUser || !db) return;
+
+const roomId = buildPairRoomId(currentUser.name, peerName);
+try {
+await db.collection("chats").doc(roomId).set({
+roomId,
+participantUids: [currentAuthUser.uid],
+participantsNames: [currentUser.name, peerName],
+createdAt: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true });
+
+chatUnsubscribe = db.collection("chats").doc(roomId)
+.collection("messages")
+.orderBy("createdAt", "asc")
+.limit(100)
+.onSnapshot(snap => {
+const remoteMsgs = [];
+snap.forEach(doc => {
+const d = doc.data();
+if (d && typeof d.text === "string" && d.text.trim()) {
+remoteMsgs.push({
+sender: d.senderUid === currentAuthUser.uid ? "me" : "opp",
+text: d.text
+});
+}
+});
+if (remoteMsgs.length > 0) {
+chatStore[peerName] = remoteMsgs;
+if (activeScreenId === "screenChat" && chatTarget.name === peerName) {
+renderChatMessages();
+}
+}
+}, err => {
+console.warn("Sohbet dinleyicisi uyarısı:", err);
+});
+} catch (err) {
+console.warn("Sohbet odası bağlantısı uyarısı:", err);
+}
+}
+
+async function appendChatMessageFirestore(peerName, text) {
+if (!firebaseReady || !currentAuthUser || !db) return;
+const roomId = buildPairRoomId(currentUser.name, peerName);
+try {
+await db.collection("chats").doc(roomId).set({
+roomId,
+participantUids: [currentAuthUser.uid],
+participantsNames: [currentUser.name, peerName],
+createdAt: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true });
+
+await db.collection("chats").doc(roomId).collection("messages").add({
+senderUid: currentAuthUser.uid,
+senderName: currentUser.name,
+text: text.slice(0, 2000),
+createdAt: firebase.firestore.FieldValue.serverTimestamp()
+});
+} catch (err) {
+console.warn("Mesaj gönderme kaydı uyarısı:", err);
+}
+}
+
+function initFirebaseServices() {
+try {
+if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "BURAYA_API_KEY") {
+firebaseReady = false;
+return;
+}
+if (!firebase.apps.length) {
+firebase.initializeApp(firebaseConfig);
+}
+
+auth = firebase.auth();
+db = firebase.firestore();
+firebaseReady = true;
+
+auth.onAuthStateChanged(async (user) => {
+currentAuthUser = user || null;
+if (user) {
+await syncPlayerAndUserStateFirestore();
+await loadRemotePlayersAndUserState();
+listenIncomingInvitesFirestore();
+listenFriendRequestsFirestore();
+updateHomeUI();
+renderFriends();
+renderLeaderboard();
+} else {
+stopRealtimeListeners();
+pendingIncomingInvite = null;
+renderIncomingInviteBanner();
+}
+});
+} catch (error) {
+console.error("Firebase bağlantı hatası:", error);
+firebaseReady = false;
+}
+}
+
+async function loginAsGuest() {
+try { playTone(540, 0.08, "triangle"); } catch (_) {}
+
+if (!currentUser.name || currentUser.name === "Oyuncu") {
+currentUser.name = "Önder";
+}
+currentUser.isGuest = true;
+
+if (firebaseReady && auth) {
+try {
+const result = await auth.signInAnonymously();
+currentAuthUser = result.user;
+} catch (error) {
+console.error("Misafir giriş hatası:", error);
+}
+}
+
+syncCurrentUserProfile();
+saveStateToStorage();
+goHomeDirect();
+}
+
+async function registerWithEmail(email, password) {
+try {
+const result = await auth.createUserWithEmailAndPassword(email, password);
+return result.user;
+} catch (error) {
+console.error(error);
+alert("Kayıt başarısız: " + error.message);
+return null;
+}
+}
+
+async function logoutFirebase() {
+if (auth) await auth.signOut();
+}
+
+async function loginWithIdentity() {
+const inp = document.getElementById("loginIdentityInput");
+const passInp = document.getElementById("loginPasswordInput");
+const raw = inp ? inp.value.trim() : "";
+const pass = passInp ? passInp.value : "";
+
+if (!raw) {
+alert("Lütfen e-posta adresi gir.");
+return;
+}
+if (!pass || pass.length < 6) {
+alert("Lütfen en az 6 karakterlik bir şifre gir.");
+return;
+}
+
+try { playTone(580, 0.08, "triangle"); } catch (_) {}
+const cleanLabel = raw.includes("@") ? raw.split("@")[0] : raw;
+
+if (firebaseReady && auth) {
+try {
+await auth.signInWithEmailAndPassword(raw, pass);
+} catch (err) {
+if (err && (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential")) {
+const created = await registerWithEmail(raw, pass);
+if (!created) return;
+} else {
+alert(err && err.message ? err.message : "E-posta/şifre girişi başarısız.");
+return;
+}
+}
+}
+
+currentUser = {
+name: cleanLabel || "Önder",
+emoji: "",
+photoUrl: "",
+isGuest: false
+};
+syncCurrentUserProfile();
+saveStateToStorage();
+goHomeDirect();
+}
+
+async function logoutCurrentAuthUser() {
+clearAllTimers();
+stopRealtimeListeners();
+game.inProgress = false;
+if (firebaseReady && auth) {
+try { await logoutFirebase(); } catch (_) {}
+}
+showScreen("screenLogin");
+}
+
+function playTone(freq, duration = 0.09, type = "sine", gainVal = 0.07) {
+if (!settingsState.sound) return;
+try {
+if (!audioCtx) {
+const Ctx = window.AudioContext || window.webkitAudioContext;
+if (Ctx) audioCtx = new Ctx();
+}
+if (!audioCtx) return;
+if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+osc.type = type;
+osc.frequency.value = freq;
+gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+osc.start();
+osc.stop(audioCtx.currentTime + duration);
+} catch (_) {}
+}
+
+function getInitials(name) {
+const clean = String(name || "?").trim();
+if (!clean) return "?";
+const parts = clean.split(/\s+/);
+if (parts.length >= 2) {
+return (parts[0][0] + parts[parts.length - 1][0]).toLocaleUpperCase("tr-TR");
+}
+return clean.slice(0, 2).toLocaleUpperCase("tr-TR");
+}
+
+function buildAvatarHtml(playerOrName, sizeClass = "", extraClass = "") {
+const name = typeof playerOrName === "string" ? playerOrName : (playerOrName && playerOrName.name) || "Oyuncu";
+const p = playersDB[name] || (typeof playerOrName === "object" ? playerOrName : null);
+const photo = p && isSafePhotoUrl(p.photoUrl) ? String(p.photoUrl).trim() : "";
+const emoji = p && p.emoji ? String(p.emoji).trim() : "";
+const classes = `avatar-badge ${sizeClass} ${extraClass}`.trim();
+
+if (photo) {
+return `<span class="${classes}"><img src="${escapeHtml(photo)}" alt="${escapeHtml(name)}"></span>`;
+}
+const content = emoji || getInitials(name);
+return `<span class="${classes}">${escapeHtml(content)}</span>`;
+}
+
+function ensurePlayerInDB(name, emoji = "") {
+const cleanName = String(name || "").trim();
+if (!cleanName) return "Rakip";
+if (!playersDB[cleanName]) {
+playersDB[cleanName] = {
+name: cleanName, emoji: emoji || "", photoUrl: "",
+pts: 0, played: 0, wins: 0, losses: 0, recentForm: []
+};
+}
+return cleanName;
+}
+
+function showScreen(id) {
+activeScreenId = id;
+if (id !== "screenChat" && chatUnsubscribe) {
+chatUnsubscribe();
+chatUnsubscribe = null;
+}
+document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+const target = document.getElementById(id);
+if (target) target.classList.add("active");
+}
+
+function clearAllTimers() {
+if (searchTimeout) clearTimeout(searchTimeout);
+if (foundInterval) clearInterval(foundInterval);
+if (questionInterval) clearInterval(questionInterval);
+if (freezeTimeout) clearTimeout(freezeTimeout);
+if (selfFreezeTimeout) clearTimeout(selfFreezeTimeout);
+if (nextRoundInterval) clearInterval(nextRoundInterval);
+if (oppSkipTimeout) clearTimeout(oppSkipTimeout);
+searchTimeout = foundInterval = questionInterval = freezeTimeout = selfFreezeTimeout = nextRoundInterval = oppSkipTimeout = null;
+}
+
+function syncCurrentUserProfile() {
+ensurePlayerInDB(currentUser.name, currentUser.emoji || "");
+const me = playersDB[currentUser.name];
+me.name = currentUser.name;
+me.emoji = currentUser.emoji || "";
+me.photoUrl = isSafePhotoUrl(currentUser.photoUrl) ? currentUser.photoUrl : "";
+}
+
+function isMatchActiveScreen() {
+return game.inProgress && (activeScreenId === "screenGame" || activeScreenId === "screenRoundResult");
+}
+
+function requestGoHome() {
+if (isMatchActiveScreen()) {
+document.getElementById("forfeitModal").classList.add("open");
+return;
+}
+goHomeDirect();
+}
+
+function closeForfeitModal() {
+document.getElementById("forfeitModal").classList.remove("open");
+}
+
+function openRulesModal() {
+playTone(520, 0.06, "sine");
+document.getElementById("rulesModal").classList.add("open");
+}
+
+function closeRulesModal() {
+document.getElementById("rulesModal").classList.remove("open");
+}
+
+function confirmForfeitAndGoHome() {
+closeForfeitModal();
+game.inProgress = false;
+game.myScore = 0;
+game.oppScore = 3;
+finalizeMatch(true);
+goHomeDirect();
+}
+
+function goHomeDirect() {
+clearAllTimers();
+if (liveMatchDocUnsubscribe) { liveMatchDocUnsubscribe(); liveMatchDocUnsubscribe = null; }
+activeMatchRoomId = null;
+game.inProgress = false;
+closeForfeitModal();
+closeRulesModal();
+syncCurrentUserProfile();
+updateHomeUI();
+renderIncomingInviteBanner();
+showScreen("screenHome");
+}
+
+function openNewGameMode() {
+clearAllTimers();
+game.inProgress = false;
+playTone(500, 0.06, "sine");
+document.getElementById("customOppInput").value = "";
+showScreen("screenNewGameMode");
+}
+
+function startCustomUsernameMatch() {
+const rawName = document.getElementById("customOppInput").value.trim();
+if (!rawName) {
+alert("Lütfen bir kullanıcı adı gir.");
+return;
+}
+if (rawName.toLocaleLowerCase("tr-TR") === currentUser.name.toLocaleLowerCase("tr-TR")) {
+alert("Kendine oyun daveti gönderemezsin.");
+return;
+}
+if (blockedSet.has(rawName)) {
+alert("Engellediğin bir oyuncuya oyun daveti gönderemezsin.");
+return;
+}
+if (!settingsState.gameInvite) {
+alert("Oyun Daveti Alma ayarı kapalı. Önce Ayarlar'dan açmalısın.");
+return;
+}
+startMatchFlow({ name: rawName, emoji: "" }, true);
+}
+
+function openSubScreen(id) {
+clearAllTimers();
+playTone(480, 0.06, "sine");
+if (id === "screenFinished") renderFinishedGames();
+if (id === "screenFriends") { loadRemotePlayersAndUserState(); renderFriends(); }
+if (id === "screenLeaderboard") { loadRemotePlayersAndUserState(); renderLeaderboard(); }
+if (id === "screenSettings") renderSettingsUI();
+showScreen(id);
+}
+
+function renderSettingsUI() {
+document.getElementById("toggleSoundBtn").classList.toggle("on", settingsState.sound);
+document.getElementById("toggleGameInviteBtn").classList.toggle("on", settingsState.gameInvite);
+document.getElementById("toggleMessageBtn").classList.toggle("on", settingsState.messages);
+
+document.getElementById("soundSettingDesc").textContent = settingsState.sound ? "Açık" : "Kapalı";
+document.getElementById("gameInviteSettingDesc").textContent = settingsState.gameInvite ? "Açık" : "Kapalı";
+document.getElementById("messageSettingDesc").textContent = settingsState.messages ? "Açık" : "Kapalı";
+}
+
+function toggleSetting(key) {
+settingsState[key] = !settingsState[key];
+saveStateToStorage();
+renderSettingsUI();
+updateHomeUI();
+renderIncomingInviteBanner();
+if (key === "sound" && settingsState.sound) playTone(660, 0.09, "sine");
+}
+
+function updateHomeUI() {
+const me = playersDB[currentUser.name] || playersDB["Önder"];
+document.getElementById("homeWelcomeSub").textContent =
+currentUser.isGuest
+? `Hoş geldin ${me.name}! Misafir olarak oyundasın.`
+: `Hoş geldin ${me.name}! Hesabın aktif.`;
+
+document.getElementById("finishedCountDesc").textContent = `${game.finishedGames.length} maç kayıtlı`;
+document.getElementById("friendsCountDesc").textContent = `${friendsSet.size} arkadaş`;
+document.getElementById("homeProfileAvatarWrap").innerHTML = buildAvatarHtml(me, "");
+document.getElementById("homeProfileTitle").textContent = me.name;
+document.getElementById("homeProfileMeta").textContent = `${me.wins}G - ${me.pts} Puan • Son ${Math.min(6, me.recentForm.length)} maç`;
+
+document.getElementById("settingsSummaryDesc").textContent =
+`Ses: ${settingsState.sound ? "Açık" : "Kapalı"} • Davet: ${settingsState.gameInvite ? "Açık" : "Kapalı"} • Mesaj: ${settingsState.messages ? "Açık" : "Kapalı"}`;
+}
+
+function openMyProfileCard() {
+openPlayerProfile(currentUser.name, "general");
+}
+
+function replayMatchupAnimation() {
+const box = document.getElementById("matchupBox");
+if (!box) return;
+box.querySelectorAll(".diag-left, .diag-right").forEach(el => {
+el.style.animation = "none";
+void el.offsetWidth;
+el.style.animation = "";
+});
+}
+
+function startMatchFlow(customOpp = null, isDirectInvite = false) {
+if (isDirectInvite && !settingsState.gameInvite) {
+alert("Oyun Daveti Alma ayarı kapalı. Arkadaş veya özel maç daveti için Ayarlar'dan aç.");
+return;
+}
+if (customOpp && blockedSet.has(customOpp.name)) {
+alert("Engellediğin bir oyuncuyla maç başlatamazsın.");
+return;
+}
+
+clearAllTimers();
+if (liveMatchDocUnsubscribe) { liveMatchDocUnsubscribe(); liveMatchDocUnsubscribe = null; }
+activeMatchRoomId = null;
+syncCurrentUserProfile();
+playTone(620, 0.08, "triangle");
+
+game.inProgress = true;
+game.myScore = 0;
+game.oppScore = 0;
+game.questionNum = 0;
+game.usedIndices = [];
+game.freezeLeft = 1;
+game.ideaLeft = 1;
+game.oppFrozen = false;
+game.meFrozen = false;
+game.hintUsedThisQ = false;
+game.answeredThisQ = false;
+game.mePressedSkip = false;
+game.oppPressedSkip = false;
+
+const eligibleBots = botPool.filter(b => !blockedSet.has(b.name));
+const fallbackPool = eligibleBots.length > 0 ? eligibleBots : botPool;
+const picked = customOpp || fallbackPool[Math.floor(Math.random() * fallbackPool.length)];
+game.oppName = ensurePlayerInDB(picked.name, picked.emoji || "");
+
+document.getElementById("searchingStatusText").textContent = isDirectInvite
+? `${game.oppName} için davet gönderiliyor...`
+: "Uygun rakip bulunuyor";
+showScreen("screenSearching");
+
+if (isDirectInvite && firebaseReady && currentAuthUser) {
+sendGameInviteFirestore(game.oppName);
+}
+
+searchTimeout = setTimeout(() => {
+const me = playersDB[currentUser.name];
+const opp = playersDB[game.oppName];
+
+document.getElementById("foundMeAvatarWrap").innerHTML = buildAvatarHtml(me, "");
+document.getElementById("foundMeName").textContent = me.name;
+document.getElementById("foundOppAvatarWrap").innerHTML = buildAvatarHtml(opp, "");
+document.getElementById("foundOppName").textContent = opp.name;
+
+createOrSyncMatchRoomFirestore(false);
+
+let left = 5;
+document.getElementById("foundCenterCountdown").textContent = `${left} sn`;
+showScreen("screenFound");
+replayMatchupAnimation();
+
+foundInterval = setInterval(() => {
+left -= 1;
+if (left <= 0) {
+clearInterval(foundInterval);
+beginQuestion();
+} else {
+document.getElementById("foundCenterCountdown").textContent = `${left} sn`;
+}
+}, 1000);
+}, 850);
+}
+
+function pickNextQuestion() {
+if (game.usedIndices.length >= numericQuestions.length) game.usedIndices = [];
+const available = numericQuestions
+.map((item, idx) => ({ item, idx }))
+.filter(x => !game.usedIndices.includes(x.idx));
+const chosen = available[Math.floor(Math.random() * available.length)];
+game.usedIndices.push(chosen.idx);
+return chosen.item;
+}
+
+function updateLiveScoreboards() {
+document.getElementById("gameMyScore").textContent = String(game.myScore);
+document.getElementById("gameOppScore").textContent = String(game.oppScore);
+document.getElementById("resMyScore").textContent = String(game.myScore);
+document.getElementById("resOppScore").textContent = String(game.oppScore);
+}
+
+function beginQuestion() {
+clearAllTimers();
+const me = playersDB[currentUser.name];
+const opp = playersDB[game.oppName];
+
+game.inProgress = true;
+game.questionNum += 1;
+game.currentQ = pickNextQuestion();
+game.timeLeft = 10;
+game.oppFrozen = false;
+game.meFrozen = false;
+game.hintUsedThisQ = false;
+game.answeredThisQ = false;
+game.mePressedSkip = false;
+game.oppPressedSkip = false;
+
+document.getElementById("gameMeAvatarWrap").innerHTML = buildAvatarHtml(me, "");
+document.getElementById("gameMeName").textContent = me.name;
+document.getElementById("gameOppAvatarWrap").innerHTML = buildAvatarHtml(opp, "");
+document.getElementById("gameOppName").textContent = opp.name;
+document.getElementById("oppFrozenTag").classList.remove("active");
+document.getElementById("meFrozenTag").classList.remove("active");
+updateLiveScoreboards();
+createOrSyncMatchRoomFirestore(false);
+
+document.getElementById("qCategory").textContent = `${game.currentQ.cat} • SORU ${game.questionNum}`;
+document.getElementById("qText").textContent = game.currentQ.q;
+
+const inp = document.getElementById("guessInput");
+inp.value = "";
+inp.disabled = false;
+document.getElementById("sendGuessBtn").disabled = false;
+
+const hintBanner = document.getElementById("hintBanner");
+hintBanner.textContent = "";
+hintBanner.classList.remove("show", "freeze-alert");
+
+updateJokerButtons();
+updateTimerUI();
+showScreen("screenGame");
+inp.focus();
+
+questionInterval = setInterval(() => {
+game.timeLeft -= 1;
+updateTimerUI();
+if (game.timeLeft > 0 && game.timeLeft <= 3) playTone(820, 0.04, "sine", 0.04);
+if (game.timeLeft <= 0) {
+clearInterval(questionInterval);
+if (!game.answeredThisQ) submitGuess(true);
+}
+}, 1000);
+}
+
+function updateTimerUI() {
+const t = Math.max(0, game.timeLeft);
+document.getElementById("timerText").textContent = String(t);
+const pct = (t / 10) * 100;
+const color = t <= 3 ? "var(--red)" : t <= 6 ? "#38bdf8" : "var(--green)";
+document.getElementById("timerCircle").style.background =
+`conic-gradient(${color} ${pct}%, rgba(125, 211, 252, 0.18) 0%)`;
+}
+
+function updateJokerButtons() {
+document.getElementById("freezeLeftBadge").textContent = String(game.freezeLeft);
+document.getElementById("ideaLeftBadge").textContent = String(game.ideaLeft);
+document.getElementById("jokerFreezeBtn").disabled = game.freezeLeft <= 0 || game.answeredThisQ || game.oppFrozen || game.meFrozen;
+document.getElementById("jokerIdeaBtn").disabled = game.ideaLeft <= 0 || game.answeredThisQ || game.hintUsedThisQ || game.meFrozen;
+}
+
+function triggerSelfFrozenState() {
+if (game.meFrozen || game.answeredThisQ) return;
+game.meFrozen = true;
+playTone(300, 0.14, "sawtooth", 0.05);
+document.getElementById("meFrozenTag").classList.add("active");
+const inp = document.getElementById("guessInput");
+const sendBtn = document.getElementById("sendGuessBtn");
+inp.disabled = true;
+sendBtn.disabled = true;
+updateJokerButtons();
+
+const hintBanner = document.getElementById("hintBanner");
+hintBanner.textContent = `❄️ ${game.oppName} seni 5 saniye dondurdu!`;
+hintBanner.classList.add("show", "freeze-alert");
+
+selfFreezeTimeout = setTimeout(() => {
+game.meFrozen = false;
+document.getElementById("meFrozenTag").classList.remove("active");
+if (!game.answeredThisQ) {
+inp.disabled = false;
+sendBtn.disabled = false;
+inp.focus();
+}
+hintBanner.classList.remove("show", "freeze-alert");
+hintBanner.textContent = "";
+updateJokerButtons();
+}, 5000);
+}
+
+function useFreezeJoker() {
+if (game.freezeLeft <= 0 || game.answeredThisQ || game.oppFrozen || game.meFrozen) return;
+playTone(740, 0.12, "triangle");
+game.freezeLeft -= 1;
+game.oppFrozen = true;
+document.getElementById("oppFrozenTag").classList.add("active");
+updateJokerButtons();
+createOrSyncMatchRoomFirestore(false);
+
+const hintBanner = document.getElementById("hintBanner");
+hintBanner.classList.remove("freeze-alert");
+hintBanner.textContent = `❄️ ${game.oppName} 5 saniye donduruldu.`;
+hintBanner.classList.add("show");
+
+freezeTimeout = setTimeout(() => {
+game.oppFrozen = false;
+document.getElementById("oppFrozenTag").classList.remove("active");
+updateJokerButtons();
+createOrSyncMatchRoomFirestore(false);
+}, 5000);
+}
+
+function useIdeaJoker() {
+if (game.ideaLeft <= 0 || game.answeredThisQ || game.hintUsedThisQ || game.meFrozen) return;
+playTone(680, 0.1, "sine");
+game.ideaLeft -= 1;
+game.hintUsedThisQ = true;
+updateJokerButtons();
+
+const target = game.currentQ.ans;
+const spread = Math.max(2, Math.round(Math.abs(target) * 0.14));
+const approx = Math.round((target + (Math.random() * 2 - 1) * spread) * 10) / 10;
+
+const hintBanner = document.getElementById("hintBanner");
+hintBanner.classList.remove("freeze-alert");
+hintBanner.textContent = `💡 Yaklaşık değer ≈ ${approx} ${game.currentQ.unit}`;
+hintBanner.classList.add("show");
+}
+
+function parseNumericGuess(raw) {
+const normalized = String(raw || "").trim().replace(",", ".");
+if (!normalized || !/^-?\d+(\.\d+)?$/.test(normalized)) return NaN;
+return Number(normalized);
+}
+
+function generateOppGuess(target) {
+const oppProfile = playersDB[game.oppName];
+const oppWinRate = oppProfile && oppProfile.played > 0 ? oppProfile.wins / oppProfile.played : 0.5;
+const skillFactor = oppWinRate >= 0.6 ? 0.72 : oppWinRate <= 0.35 ? 1.25 : 1;
+const matchPointTension = game.myScore === 2 || game.oppScore === 2 ? 0.85 : 1.05;
+
+const baseSpread = game.oppFrozen
+? Math.max(15, Math.abs(target) * 0.5)
+: Math.max(2.5, Math.abs(target) * 0.18 * skillFactor * matchPointTension);
+
+const delta = (Math.random() * 2 - 1) * baseSpread;
+return Math.round((target + delta) * 10) / 10;
+}
+
+function formatProximity(real, guess) {
+if (guess === null || Number.isNaN(guess)) {
+return { text: "Süre Doldu", cls: "diff-neg", abs: Infinity };
+}
+const abs = Math.round(Math.abs(real - guess) * 10) / 10;
+if (abs === 0) return { text: "0 fark (Tam!)", cls: "diff-zero", abs: 0 };
+return { text: `${abs} fark`, cls: abs <= 5 ? "diff-pos" : "diff-neg", abs };
+}
+
+function submitGuess(timedOut = false) {
+if (game.answeredThisQ) return;
+if (!timedOut && game.meFrozen) return;
+
+const inp = document.getElementById("guessInput");
+const rawVal = inp.value.trim();
+let myGuess = parseNumericGuess(rawVal);
+
+if (!timedOut && Number.isNaN(myGuess)) {
+alert("Lütfen geçerli bir sayı gir.");
+return;
+}
+if (timedOut && Number.isNaN(myGuess)) {
+myGuess = null;
+}
+
+game.answeredThisQ = true;
+clearAllTimers();
+game.oppFrozen = false;
+game.meFrozen = false;
+document.getElementById("oppFrozenTag").classList.remove("active");
+document.getElementById("meFrozenTag").classList.remove("active");
+inp.disabled = true;
+document.getElementById("sendGuessBtn").disabled = true;
+updateJokerButtons();
+
+const real = game.currentQ.ans;
+const oppGuess = generateOppGuess(real);
+const myProx = formatProximity(real, myGuess);
+const oppProx = formatProximity(real, oppGuess);
+
+const me = playersDB[currentUser.name];
+const opp = playersDB[game.oppName];
+
+let summary = "";
+if (myProx.abs === oppProx.abs) {
+playTone(460, 0.08, "sine");
+summary = "İki tahmin de eşit yaklaştı! Puan çıkmadı.";
+} else if (myProx.abs < oppProx.abs) {
+game.myScore += 1;
+playTone(760, 0.11, "triangle");
+summary = `${me.name} daha yakın (${myProx.text})! +1 puan.`;
+} else {
+game.oppScore += 1;
+playTone(320, 0.12, "sawtooth", 0.05);
+summary = `${opp.name} daha yakın (${oppProx.text})! +1 puan.`;
+}
+
+document.getElementById("resMeAvatarWrap").innerHTML = buildAvatarHtml(me, "");
+document.getElementById("resMeName").textContent = me.name;
+document.getElementById("resOppAvatarWrap").innerHTML = buildAvatarHtml(opp, "");
+document.getElementById("resOppName").textContent = opp.name;
+updateLiveScoreboards();
+createOrSyncMatchRoomFirestore(false);
+
+document.getElementById("realAnswerVal").textContent = `${real} ${game.currentQ.unit}`;
+document.getElementById("myAnswerLabel").textContent = `${me.name}'in Cevabı`;
+document.getElementById("myAnswerVal").textContent = myGuess === null ? "—" : `${myGuess}`;
+document.getElementById("oppAnswerLabel").textContent = `${opp.name}'in Cevabı`;
+document.getElementById("oppAnswerVal").textContent = `${oppGuess}`;
+
+const myBadge = document.getElementById("myDiffBadge");
+myBadge.textContent = myProx.text;
+myBadge.className = `diff-badge ${myProx.cls}`;
+
+const oppBadge = document.getElementById("oppDiffBadge");
+oppBadge.textContent = oppProx.text;
+oppBadge.className = `diff-badge ${oppProx.cls}`;
+
+const matchOver = game.myScore >= 3 || game.oppScore >= 3;
+document.getElementById("roundSummaryText").textContent = summary;
+
+game.mePressedSkip = false;
+game.oppPressedSkip = false;
+const skipBtn = document.getElementById("nextRoundBtn");
+skipBtn.disabled = false;
+skipBtn.textContent = "Hemen Geç";
+document.getElementById("skipStatusNote").textContent =
+"İki oyuncu da basarsa erken geçilir; aksi halde süre beklenir.";
+
+if (Math.random() < 0.55) {
+oppSkipTimeout = setTimeout(() => {
+game.oppPressedSkip = true;
+if (game.mePressedSkip) {
+proceedFromRoundResult();
+} else {
+document.getElementById("skipStatusNote").textContent =
+`${opp.name} Hemen Geç'e bastı — senin onayını bekliyor.`;
+}
+}, 1600);
+}
+
+let nextLeft = 5;
+document.getElementById("nextRoundCountdownBadge").textContent =
+matchOver ? `Maç sonu: ${nextLeft} sn` : `Sonraki soru: ${nextLeft} sn`;
+
+showScreen("screenRoundResult");
+
+nextRoundInterval = setInterval(() => {
+nextLeft -= 1;
+if (nextLeft <= 0) {
+proceedFromRoundResult();
+} else {
+document.getElementById("nextRoundCountdownBadge").textContent =
+matchOver ? `Maç sonu: ${nextLeft} sn` : `Sonraki soru: ${nextLeft} sn`;
+}
+}, 1000);
+}
+
+function pressSkipTogether() {
+if (game.mePressedSkip) return;
+playTone(560, 0.06, "sine");
+game.mePressedSkip = true;
+const btn = document.getElementById("nextRoundBtn");
+btn.disabled = true;
+btn.textContent = "Onaylandı ✓";
+
+if (game.oppPressedSkip) {
+proceedFromRoundResult();
+} else {
+document.getElementById("skipStatusNote").textContent =
+`Sen bastın, ${game.oppName}'in basması bekleniyor (veya süre bitince geçecek).`;
+}
+}
+
+function proceedFromRoundResult() {
+clearAllTimers();
+if (game.myScore >= 3 || game.oppScore >= 3) {
+finalizeMatch(false);
+return;
+}
+beginQuestion();
+}
+
+function pushRecentForm(playerObj, entry) {
+playerObj.recentForm.unshift(entry);
+if (playerObj.recentForm.length > 6) {
+playerObj.recentForm = playerObj.recentForm.slice(0, 6);
+}
+}
+
+function finalizeMatch(isForfeit = false) {
+clearAllTimers();
+game.inProgress = false;
+const won = !isForfeit && game.myScore >= 3;
+playTone(won ? 880 : 280, 0.18, won ? "triangle" : "sawtooth", 0.08);
+
+const me = playersDB[currentUser.name];
+const opp = playersDB[game.oppName];
+const myFinalScore = game.myScore;
+const oppFinalScore = game.oppScore;
+
+me.played += 1;
+opp.played += 1;
+
+let myGainedPts = 0;
+let oppGainedPts = 0;
+
+if (won) {
+me.wins += 1;
+myGainedPts = 3 + myFinalScore;
+opp.losses += 1;
+oppGainedPts = oppFinalScore;
+} else {
+me.losses += 1;
+myGainedPts = myFinalScore;
+opp.wins += 1;
+oppGainedPts = 3 + oppFinalScore;
+}
+
+me.pts += myGainedPts;
+opp.pts += oppGainedPts;
+
+pushRecentForm(me, { opp: opp.name, won, myPts: myFinalScore, oppPts: oppFinalScore, gainedPts: myGainedPts });
+pushRecentForm(opp, { opp: me.name, won: !won, myPts: oppFinalScore, oppPts: myFinalScore, gainedPts: oppGainedPts });
+
+const todayStr = new Date().toLocaleDateString("tr-TR");
+if (!h2hRecords[opp.name]) {
+h2hRecords[opp.name] = { firstMatchDate: todayStr, matches: [] };
+} else if (!h2hRecords[opp.name].firstMatchDate) {
+h2hRecords[opp.name].firstMatchDate = todayStr;
+}
+
+h2hRecords[opp.name].matches.push({ wonByMe: won, myScore: myFinalScore, oppScore: oppFinalScore });
+
+game.finishedGames.unshift({
+opp: opp.name,
+myScore: myFinalScore,
+oppScore: oppFinalScore,
+result: isForfeit ? "Hükmen Mağlubiyet" : (won ? "Kazandın" : "Kaybettin")
+});
+
+createOrSyncMatchRoomFirestore(true);
+saveStateToStorage();
+updateHomeUI();
+
+if (isForfeit) return;
+
+document.getElementById("matchEndTitle").textContent = won ? "Tebrikler, Kazandın!" : "Bu Maçı Kaybettin";
+document.getElementById("endMeAvatarWrap").innerHTML = buildAvatarHtml(me, "lg", won ? "winner-ring" : "");
+document.getElementById("endMeName").textContent = me.name;
+document.getElementById("endMyScore").textContent = String(myFinalScore);
+document.getElementById("endOppScore").textContent = String(oppFinalScore);
+document.getElementById("endOppAvatarWrap").innerHTML = buildAvatarHtml(opp, "lg", !won ? "winner-ring" : "");
+document.getElementById("endOppName").textContent = opp.name;
+
+document.getElementById("endMeSide").classList.toggle("winner-side", won);
+document.getElementById("endOppSide").classList.toggle("winner-side", !won);
+document.getElementById("endMeCrown").textContent = won ? "👑 Kazanan" : "";
+document.getElementById("endOppCrown").textContent = !won ? "👑 Kazanan" : "";
+
+updateEndFriendButton(opp.name);
+showScreen("screenMatchEnd");
+}
+
+function updateEndFriendButton(oppName) {
+const addBtn = document.getElementById("endQuickAddBtn");
+const isFriend = friendsSet.has(oppName);
+addBtn.textContent = isFriend ? "✓" : "➕";
+addBtn.disabled = isFriend;
+}
+
+function quickAddOpponentFriend() {
+friendsSet.add(game.oppName);
+updateEndFriendButton(game.oppName);
+saveStateToStorage();
+updateHomeUI();
+sendFriendRequestFirestore(game.oppName);
+}
+
+function openChatFromMatchEnd() { openChatScreen(game.oppName); }
+function openOpponentProfileFromEnd() { openPlayerProfile(game.oppName, "general"); }
+
+function openPlayerProfile(name, initialTab = "general") {
+clearAllTimers();
+const cleanName = ensurePlayerInDB(name, "");
+const isSelf = cleanName === currentUser.name;
+currentProfileTarget = { name: cleanName, tab: isSelf ? "general" : initialTab };
+avatarDrawerOpen = false;
+
+if (isSelf) {
+draftSelfProfile = {
+name: currentUser.name,
+emoji: currentUser.emoji || "",
+photoUrl: currentUser.photoUrl || ""
+};
+}
+
+renderProfileHeaderAndDrawer(isSelf);
+document.getElementById("profileTabsWrap").style.display = isSelf ? "none" : "grid";
+document.getElementById("confirmProfileBtn").style.display = isSelf ? "block" : "none";
+
+switchProfileTab(isSelf ? "general" : initialTab);
+showScreen("screenProfile");
+}
+
+function renderProfileHeaderAndDrawer(isSelf) {
+const p = playersDB[currentProfileTarget.name];
+const displayObj = isSelf
+? { name: draftSelfProfile.name, emoji: draftSelfProfile.emoji, photoUrl: draftSelfProfile.photoUrl }
+: p;
+
+document.getElementById("profileAvatarWrap").innerHTML =
+buildAvatarHtml(displayObj, "lg", isSelf ? "editable" : "");
+
+if (isSelf) {
+const avEl = document.querySelector("#profileAvatarWrap .avatar-badge");
+if (avEl) {
+avEl.title = "Emoji ve resim seçmek için dokun";
+avEl.onclick = toggleAvatarDrawer;
+}
+}
+
+document.getElementById("profileName").textContent = displayObj.name;
+document.getElementById("profileSub").textContent = isSelf
+? "Profilin • Avatar için simgeye dokun"
+: "Oyuncu Profili";
+
+document.getElementById("profileMsgBtn").style.display = isSelf ? "none" : "inline-flex";
+
+const drawer = document.getElementById("avatarPickerDrawer");
+drawer.classList.toggle("open", isSelf && avatarDrawerOpen);
+
+if (isSelf && avatarDrawerOpen) {
+const grid = document.getElementById("emojiPickerGrid");
+grid.innerHTML = emojiChoices.map(em => {
+const val = em === "Yok" ? "" : em;
+const isSelected = !draftSelfProfile.photoUrl && draftSelfProfile.emoji === val;
+return `<button type="button" class="emoji-choice-btn ${isSelected ? "selected" : ""}" onclick="selectDraftEmoji('${escapeJs(val)}')">${escapeHtml(em)}</button>`;
+}).join("");
+}
+}
+
+function toggleAvatarDrawer() {
+if (currentProfileTarget.name !== currentUser.name) return;
+avatarDrawerOpen = !avatarDrawerOpen;
+renderProfileHeaderAndDrawer(true);
+}
+
+function selectDraftEmoji(em) {
+draftSelfProfile.emoji = em;
+draftSelfProfile.photoUrl = "";
+renderProfileHeaderAndDrawer(true);
+}
+
+function triggerProfilePhotoUpload() {
+const inp = document.getElementById("profilePhotoFileInput");
+inp.value = "";
+inp.click();
+}
+
+function handleProfilePhotoPicked(ev) {
+const file = ev.target.files && ev.target.files[0];
+if (!file) return;
+const reader = new FileReader();
+reader.onload = () => {
+const result = String(reader.result || "");
+if (!isSafePhotoUrl(result)) return;
+draftSelfProfile.photoUrl = result;
+draftSelfProfile.emoji = "";
+renderProfileHeaderAndDrawer(true);
+};
+reader.readAsDataURL(file);
+}
+
+function renameUserReferences(oldName, newName) {
+if (oldName === newName) return;
+
+if (friendsSet.has(oldName)) { friendsSet.delete(oldName); friendsSet.add(newName); }
+if (blockedSet.has(oldName)) { blockedSet.delete(oldName); blockedSet.add(newName); }
+if (chatStore[oldName]) { chatStore[newName] = chatStore[oldName]; delete chatStore[oldName]; }
+if (h2hRecords[oldName]) { h2hRecords[newName] = h2hRecords[oldName]; delete h2hRecords[oldName]; }
+if (Array.isArray(game.finishedGames)) {
+game.finishedGames.forEach(item => { if (item.opp === oldName) item.opp = newName; });
+}
+Object.values(playersDB).forEach(pl => {
+if (Array.isArray(pl.recentForm)) {
+pl.recentForm.forEach(entry => { if (entry.opp === oldName) entry.opp = newName; });
+}
+});
+}
+
+function confirmSelfProfileChanges() {
+const nameInp = document.getElementById("selfUsernameInput");
+const typedName = nameInp ? nameInp.value.trim() : draftSelfProfile.name.trim();
+if (!typedName) {
+alert("Kullanıcı adı boş olamaz.");
+return;
+}
+if (typedName !== currentUser.name && playersDB[typedName]) {
+alert("Bu kullanıcı adı zaten kullanımda.");
+return;
+}
+
+const oldName = currentUser.name;
+const oldRecord = playersDB[oldName];
+
+currentUser.name = typedName;
+currentUser.emoji = draftSelfProfile.emoji;
+currentUser.photoUrl = isSafePhotoUrl(draftSelfProfile.photoUrl) ? draftSelfProfile.photoUrl : "";
+
+if (oldName !== typedName && oldRecord) {
+playersDB[typedName] = {
+...oldRecord,
+name: typedName,
+emoji: currentUser.emoji,
+photoUrl: currentUser.photoUrl
+};
+delete playersDB[oldName];
+renameUserReferences(oldName, typedName);
+} else {
+syncCurrentUserProfile();
+}
+
+currentProfileTarget.name = typedName;
+avatarDrawerOpen = false;
+playTone(720, 0.1, "triangle");
+saveStateToStorage();
+updateHomeUI();
+renderProfileHeaderAndDrawer(true);
+renderGeneralProfile();
+}
+
+function openChatFromProfile() { openChatScreen(currentProfileTarget.name); }
+
+function switchProfileTab(tab) {
+currentProfileTarget.tab = tab;
+document.getElementById("tabGeneralBtn").classList.toggle("active", tab === "general");
+document.getElementById("tabCompareBtn").classList.toggle("active", tab === "compare");
+document.getElementById("profileGeneralPanel").style.display = tab === "general" ? "flex" : "none";
+document.getElementById("profileComparePanel").style.display = tab === "compare" ? "flex" : "none";
+
+if (tab === "general") renderGeneralProfile();
+else renderCompareProfile();
+}
+
+function renderGeneralProfile() {
+const isSelf = currentProfileTarget.name === currentUser.name;
+const p = playersDB[currentProfileTarget.name];
+const winRate = p.played > 0 ? Math.round((p.wins / p.played) * 100) : 0;
+const shownForm = p.recentForm.slice(0, 6);
+
+const formWins = shownForm.filter(m => m.won).length;
+const formLosses = shownForm.length - formWins;
+const formPtsTotal = shownForm.reduce((acc, m) => acc + m.gainedPts, 0);
+
+const chipsHtml = shownForm.length > 0
+? shownForm.map(m =>
+`<span class="form-chip ${m.won ? "chip-w" : "chip-l"}">${m.won ? "G" : "M"}</span>`
+).join("")
+: `<span class="muted">Maç kaydı yok</span>`;
+
+const usernameEditorHtml = isSelf ? `
+<div class="login-card">
+<div class="field-label">Kullanıcı Adı</div>
+<input id="selfUsernameInput" class="text-field" type="text" value="${escapeHtml(draftSelfProfile.name)}" oninput="draftSelfProfile.name = this.value; document.getElementById('profileName').textContent = this.value.trim() || 'Kullanıcı';">
+</div>
+` : "";
+
+document.getElementById("profileGeneralPanel").innerHTML = `
+${usernameEditorHtml}
+
+<div class="stat-grid">
+<div class="stat-box"><div class="muted">Toplam Maç</div><div class="stat-val">${p.played}</div></div>
+<div class="stat-box"><div class="muted">Toplam Puan</div><div class="stat-val" style="color:var(--blue);">${p.pts}</div></div>
+<div class="stat-box"><div class="muted">Galibiyet / Mağlubiyet</div><div class="stat-val" style="font-size:16px;"><span style="color:var(--green);">${p.wins}G</span> - <span style="color:#fca5a5;">${p.losses}M</span></div></div>
+<div class="stat-box"><div class="muted">Kazanma %</div><div class="stat-val" style="color:var(--green);">%${winRate}</div></div>
+</div>
+
+<div class="compare-box">
+<div class="compare-title">SON ${shownForm.length} MAÇ FORMU</div>
+<div class="form-chips">${chipsHtml}</div>
+<div style="font-size:12px; font-weight:800; margin-top:2px;">
+Son ${shownForm.length} maçta: <span style="color:var(--green);">${formWins} Galibiyet</span> • <span style="color:#fca5a5;">${formLosses} Mağlubiyet</span> • <span style="color:var(--blue);">${formPtsTotal} Puan</span>
+</div>
+</div>
+`;
+}
+
+function renderCompareProfile() {
+const targetName = currentProfileTarget.name;
+const panel = document.getElementById("profileComparePanel");
+
+if (targetName === currentUser.name) {
+panel.innerHTML = `<div class="list-card"><span class="muted">Karşılaştırma için bir rakip profili açmalısın.</span></div>`;
+return;
+}
+
+const me = playersDB[currentUser.name];
+const opp = playersDB[targetName];
+const rec = h2hRecords[targetName] || { firstMatchDate: null, matches: [] };
+const h2hMatches = rec.matches || [];
+
+const totalH2h = h2hMatches.length;
+const myH2hWins = h2hMatches.filter(m => m.wonByMe).length;
+const myH2hLosses = totalH2h - myH2hWins;
+const oppH2hWins = myH2hLosses;
+const oppH2hLosses = myH2hWins;
+
+const myH2hRate = totalH2h > 0 ? Math.round((myH2hWins / totalH2h) * 100) : 0;
+const oppH2hRate = totalH2h > 0 ? Math.round((oppH2hWins / totalH2h) * 100) : 0;
+
+const myTotalScoreInH2h = h2hMatches.reduce((sum, m) => sum + m.myScore, 0);
+const oppTotalScoreInH2h = h2hMatches.reduce((sum, m) => sum + m.oppScore, 0);
+
+const myFormBoxes = totalH2h > 0
+? h2hMatches.map(m => `<span class="form-chip ${m.wonByMe ? "chip-w" : "chip-l"}">${m.wonByMe ? "G" : "M"}</span>`).join("")
+: `<span class="muted">-</span>`;
+
+const oppFormBoxes = totalH2h > 0
+? h2hMatches.map(m => `<span class="form-chip ${!m.wonByMe ? "chip-w" : "chip-l"}">${!m.wonByMe ? "G" : "M"}</span>`).join("")
+: `<span class="muted">-</span>`;
+
+panel.innerHTML = `
+<div class="compare-box">
+<div class="compare-title">KARŞILAŞTIRMA (${escapeHtml(me.name.toUpperCase())} VS ${escapeHtml(opp.name.toUpperCase())})</div>
+
+<div class="compare-row">
+<span style="color:var(--green);">${totalH2h}</span>
+<span class="compare-mid">TOPLAM MAÇ</span>
+<span style="text-align:right; color:var(--blue);">${totalH2h}</span>
+</div>
+
+<div class="compare-row">
+<span style="color:var(--green);">${myH2hWins}</span>
+<span class="compare-mid">GALİBİYET</span>
+<span style="text-align:right; color:var(--blue);">${oppH2hWins}</span>
+</div>
+
+<div class="compare-row">
+<span style="color:#fca5a5;">${myH2hLosses}</span>
+<span class="compare-mid">MAĞLUBİYET</span>
+<span style="text-align:right; color:#fca5a5;">${oppH2hLosses}</span>
+</div>
+
+<div class="compare-row">
+<span style="color:var(--green);">%${myH2hRate}</span>
+<span class="compare-mid">KAZANMA ORANI</span>
+<span style="text-align:right; color:var(--blue);">%${oppH2hRate}</span>
+</div>
+
+<div class="compare-row">
+<span style="color:var(--green);">${myTotalScoreInH2h}</span>
+<span class="compare-mid">TOPLAM TUR SKORU</span>
+<span style="text-align:right; color:var(--blue);">${oppTotalScoreInH2h}</span>
+</div>
+
+<div class="compare-title" style="margin-top:2px;">FORM DURUMU</div>
+<div class="form-split-grid">
+<div class="form-side-card">
+<div class="muted" style="margin-bottom:4px;">${escapeHtml(me.name)}</div>
+<div class="form-chips">${myFormBoxes}</div>
+</div>
+<div class="form-side-card">
+<div class="muted" style="margin-bottom:4px;">${escapeHtml(opp.name)}</div>
+<div class="form-chips">${oppFormBoxes}</div>
+</div>
+</div>
+
+<div class="compare-title" style="margin-top:2px;">İlk Oyun Tarihi</div>
+<div class="date-box">${escapeHtml(rec.firstMatchDate || "Henüz maç yapılmadı")}</div>
+</div>
+`;
+}
+
+function openChatScreen(name) {
+const cleanName = ensurePlayerInDB(name, "");
+if (cleanName === currentUser.name) return;
+clearAllTimers();
+chatTarget = { name: cleanName };
+if (!chatStore[cleanName]) {
+chatStore[cleanName] = [{ sender: "opp", text: `Merhaba ${currentUser.name}, ben ${cleanName}!` }];
+}
+const p = playersDB[cleanName];
+document.getElementById("chatAvatarWrap").innerHTML = buildAvatarHtml(p, "");
+document.getElementById("chatPlayerName").textContent = p.name;
+refreshChatHeaderButtons();
+renderChatMessages();
+showScreen("screenChat");
+listenChatRoomFirestore(cleanName);
+}
+
+function refreshChatHeaderButtons() {
+const name = chatTarget.name;
+const isFriend = friendsSet.has(name);
+const isBlocked = blockedSet.has(name);
+const addBtn = document.getElementById("chatAddBtn");
+addBtn.textContent = isFriend ? "Çıkar" : "Ekle";
+addBtn.className = isFriend ? "btn btn-ghost btn-small" : "btn btn-blue btn-small";
+addBtn.disabled = false;
+document.getElementById("chatBlockBtn").textContent = isBlocked ? "Engel Kaldır" : "Engelle";
+
+const chatInp = document.getElementById("chatInput");
+const chatSendBtn = document.getElementById("chatSendBtn");
+if (!settingsState.messages) {
+chatInp.disabled = true;
+chatSendBtn.disabled = true;
+chatInp.placeholder = "Mesaj alma ayarı kapalı";
+document.getElementById("chatStatusSub").textContent = "Mesaj alma kapalı";
+} else if (isBlocked) {
+chatInp.disabled = true;
+chatSendBtn.disabled = true;
+chatInp.placeholder = "Engellenmiş kullanıcı";
+document.getElementById("chatStatusSub").textContent = "Engellendi";
+} else {
+chatInp.disabled = false;
+chatSendBtn.disabled = false;
+chatInp.placeholder = "Mesaj yaz...";
+document.getElementById("chatStatusSub").textContent = isFriend ? "Arkadaşın" : "Oyuncu";
+}
+}
+
+function toggleFriendInChat() {
+const target = chatTarget.name;
+if (friendsSet.has(target)) {
+friendsSet.delete(target);
+saveStateToStorage();
+updateHomeUI();
+refreshChatHeaderButtons();
+return;
+}
+friendsSet.add(target);
+refreshChatHeaderButtons();
+saveStateToStorage();
+updateHomeUI();
+sendFriendRequestFirestore(target);
+}
+
+function toggleBlockInChat() {
+const name = chatTarget.name;
+if (blockedSet.has(name)) blockedSet.delete(name);
+else blockedSet.add(name);
+refreshChatHeaderButtons();
+saveStateToStorage();
+}
+
+function renderChatMessages() {
+const box = document.getElementById("chatMessages");
+const list = chatStore[chatTarget.name] || [];
+box.innerHTML = list.map(m =>
+`<div class="msg-bubble ${m.sender === "me" ? "msg-me" : "msg-opp"}">${escapeHtml(m.text)}</div>`
+).join("");
+box.scrollTop = box.scrollHeight;
+}
+
+function sendChatMessage() {
+if (!settingsState.messages || blockedSet.has(chatTarget.name)) return;
+const inp = document.getElementById("chatInput");
+const txt = inp.value.trim();
+if (!txt) return;
+playTone(640, 0.06, "sine");
+chatStore[chatTarget.name].push({ sender: "me", text: txt });
+inp.value = "";
+saveStateToStorage();
+renderChatMessages();
+appendChatMessageFirestore(chatTarget.name, txt);
+}
+
+function renderFinishedGames() {
+const box = document.getElementById("finishedList");
+if (game.finishedGames.length === 0) {
+box.innerHTML = `<div class="list-card"><span class="muted">Henüz biten oyun yok.</span></div>`;
+return;
+}
+box.innerHTML = game.finishedGames.map(g => {
+const opp = playersDB[g.opp] || { name: g.opp, emoji: "" };
+return `
+<div class="list-card clickable-row" onclick="openPlayerProfile('${escapeJs(g.opp)}', 'compare')">
+<div class="list-left">
+${buildAvatarHtml(opp, "")}
+<div>
+<div style="font-weight:800;">${escapeHtml(currentUser.name)} vs ${escapeHtml(g.opp)}</div>
+<div class="muted">Skor: ${g.myScore} - ${g.oppScore} • ${escapeHtml(g.result)}</div>
+</div>
+</div>
+<span class="muted">Profil ›</span>
+</div>
+`;
+}).join("");
+}
+
+function renderFriends() {
+const box = document.getElementById("friendsList");
+if (friendsSet.size === 0) {
+box.innerHTML = `<div class="list-card"><span class="muted">Henüz arkadaş eklenmedi.</span></div>`;
+return;
+}
+box.innerHTML = [...friendsSet].map(name => {
+const p = playersDB[ensurePlayerInDB(name, "")];
+const isBlocked = blockedSet.has(p.name);
+const playDisabled = !settingsState.gameInvite || isBlocked;
+return `
+<div class="list-card clickable-row" onclick="openPlayerProfile('${escapeJs(p.name)}', 'general')">
+<div class="list-left">
+${buildAvatarHtml(p, "")}
+<div>
+<div style="font-weight:800;">${escapeHtml(p.name)}</div>
+<div class="muted">${p.wins}G - ${p.losses}M • ${p.pts} Puan</div>
+</div>
+</div>
+<button type="button" class="btn btn-green btn-small" ${playDisabled ? "disabled title='Davet kapalı veya kullanıcı engelli'" : ""} onclick="event.stopPropagation(); startMatchFlow({name:'${escapeJs(p.name)}', emoji:'${escapeJs(p.emoji)}'}, true)">Oyna</button>
+</div>
+`;
+}).join("");
+}
+
+function renderLeaderboard() {
+const sorted = Object.values(playersDB).sort((a, b) => b.pts - a.pts || b.wins - a.wins);
+document.getElementById("leaderboardList").innerHTML = sorted.map((p, idx) => `
+<div class="list-card clickable-row" onclick="openPlayerProfile('${escapeJs(p.name)}', 'general')">
+<div class="list-left">
+<span class="avatar-badge" style="width:30px; height:30px; font-size:12px;">#${idx + 1}</span>
+${buildAvatarHtml(p, "")}
+<div>
+<div style="font-weight:800;">${escapeHtml(p.name)}</div>
+<div class="muted">${p.wins}G - ${p.played} Maç</div>
+</div>
+</div>
+<div style="font-weight:900; color:var(--green);">${p.pts} Puan</div>
+</div>
+`).join("");
+}
+
+function escapeHtml(str) {
+return String(str)
+.replace(/&/g, "&amp;")
+.replace(/</g, "&lt;")
+.replace(/>/g, "&gt;")
+.replace(/"/g, "&quot;")
+.replace(/'/g, "&#39;");
+}
+
+function escapeJs(str) {
+return String(str)
+.replace(/\/g, "\\")
+.replace(/'/g, "\'");
+}
+
+document.getElementById("guestLoginBtn").addEventListener("click", e => {
+e.preventDefault();
+loginAsGuest().catch(err => {
+showDebugError("Giriş hatası: " + (err && err.message ? err.message : err));
+});
+});
+
+document.getElementById("identityLoginBtn").addEventListener("click", e => {
+e.preventDefault();
+loginWithIdentity().catch(err => {
+showDebugError("Giriş hatası: " + (err && err.message ? err.message : err));
+});
+});
+
+document.getElementById("loginIdentityInput").addEventListener("keydown", e => {
+if (e.key === "Enter") { e.preventDefault(); loginWithIdentity(); }
+});
+
+document.getElementById("loginPasswordInput").addEventListener("keydown", e => {
+if (e.key === "Enter") { e.preventDefault(); loginWithIdentity(); }
+});
+
+document.getElementById("guessInput").addEventListener("keydown", e => {
+if (e.key === "Enter") submitGuess(false);
+});
+
+document.getElementById("chatInput").addEventListener("keydown", e => {
+if (e.key === "Enter") sendChatMessage();
+});
+
+(function bootApp() {
+try {
+loadStateFromStorage();
+syncCurrentUserProfile();
+renderSettingsUI();
+updateHomeUI();
+initFirebaseServices();
+} catch (err) {
+showDebugError("Başlatma hatası: " + (err && err.message ? err.message : err));
+}
+})();
+</script>
+</body>
+</html>
